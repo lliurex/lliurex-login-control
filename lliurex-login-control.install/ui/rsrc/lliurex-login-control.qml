@@ -14,9 +14,9 @@ ApplicationWindow {
     width: mainLayout.implicitWidth + 2 * margin
     height: mainLayout.implicitHeight + 2 * margin
     minimumWidth: 680 + 2 * margin
-    minimumHeight: 540 + 2 * margin
+    minimumHeight: 580 + 2 * margin
     maximumWidth: 680 + 2 * margin
-    maximumHeight: 540 + 2 * margin
+    maximumHeight: 580 + 2 * margin
 
     Component.onCompleted: {
         x = Screen.width / 2 - minimumWidth / 2
@@ -68,7 +68,7 @@ ApplicationWindow {
             id: mainView
             Layout.fillWidth:true
             Layout.fillHeight:true
-            Layout.minimumHeight:420
+            Layout.minimumHeight:460
 
             property int currentIndex:loginControlBridge.currentStack
            

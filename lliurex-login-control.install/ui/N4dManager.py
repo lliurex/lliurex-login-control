@@ -143,7 +143,10 @@ class N4dManager:
 		if changeLogin:
 			if currentLoginOption in (N4dManager.WifiMode.EASYLOGIN,N4dManager.WifiMode.EASYLOGINWIRED):
 				ret=self._changeEasyLogin(True)
-
+			else:
+				if self.currentLoginOption in (N4dManager.WifiMode.EASYLOGIN,N4dManager.WifiMode.EASYLOGINWIRED):
+				ret=self._changeEasyLogin(False)
+								
 			ret=self._changeLogin(currentLoginOption)
 			lastError=ret.get("lastError",None)
 			errorCount=errorCount+ret.get("errorCount",0)
@@ -154,12 +157,12 @@ class N4dManager:
 			errorCount=errorCount+ret.get("errorCount",0)
 
 		if actionAutologin != -1:
-			self._changeAutoLogin(actionAutologin)
+			ret=self._changeAutoLogin(actionAutologin)
 			lastError=ret.get("lastError",None)
 			errorCount=errorCount+ret.get("errorCount",0)
 
 		if isGuestUserEnabled != self.isGuestUserEnabled:
-			self._changeGuestUser(isGuestUserEnabled)
+			ret=self._changeGuestUser(isGuestUserEnabled)
 			lastError=ret.get("lastError",None)
 			errorCount=errorCount+ret.get("errorCount",0)
 
@@ -224,11 +227,11 @@ class N4dManager:
 		}
 		
 		self.writeLog("Changes in autologin password:")
-		action_text = "Update password" if currentPassword else "Clear password"
+		action_text = "Update password" if newPassword else "Clear password"
 		self.writeLog(f"- Action: {action_text}")
 
 		try:
-			self.client.WifiEduGva.set_autologin(currentPassword)
+			self.client.WifiEduGva.set_autologin(newPassword)
 			self.writeLog("- Result: changes apply successful")
 		except Exception as e:
 			self.writeLog(f"- Result: Error applying changes: {e}")
