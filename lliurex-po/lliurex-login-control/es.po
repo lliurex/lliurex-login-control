@@ -1,0 +1,197 @@
+# Spanish translations for PACKAGE package
+# Traducciones al español para el paquete PACKAGE.
+# Copyright (C) 2023 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# lliurex <lliurex@gva.es>, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-03 13:54+0200\n"
+"PO-Revision-Date: 2026-09-03 13:55+0200\n"
+"Last-Translator: lliurex <lliurex@gva.es>\n"
+"Language-Team: Spanish\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.4.2\n"
+
+#: ../lliurex-login-control.install/ui/rsrc/ApplicationOptions.qml:24
+msgid "Configuration"
+msgstr "Configuración"
+
+#: ../lliurex-login-control.install/ui/rsrc/ApplicationOptions.qml:32
+msgid "Help"
+msgstr "Ayuda"
+
+#: ../lliurex-login-control.install/ui/rsrc/CustomPopup.qml:71
+msgid "Apply changes. Wait a moment..."
+msgstr "Aplicando cambios. Espere un momento..."
+
+#: ../lliurex-login-control.install/ui/rsrc/CustomPopup.qml:73
+msgid "Restoring previous values. Wait a moment..."
+msgstr "Resturando los valores anteriores. Espere un momento..."
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:32
+msgid "Login configuration"
+msgstr "Configuración del inicio de sesión"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:50
+msgid "Activate automatic connection to the Wifi (WIFI_EDU) at login"
+msgstr ""
+"Activar conexión automática a la Wifi (WIFI_EDU) en el inicio de sesión"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:72
+msgid "Default access mode:"
+msgstr "Modo de acceso por defecto:"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:93
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:103
+msgid "Access using user credentials"
+msgstr "Acceso mediante credenciales de usuario"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:114
+msgid "Automatic login with alumnat user"
+msgstr "Inicio automático de sesión con usuario alumnat"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:125
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:136
+msgid "Access using Easy-Login"
+msgstr "Acceso mediante Easy-Login"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:154
+msgid "Password for wifi connection with alumnat or Easy-Login:"
+msgstr "Contraseña para la conexión por Wifi mediante alumnat o Easy-Login:"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:161
+msgid "Password:"
+msgstr "Contraseña:"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:214
+msgid "Click to edit password"
+msgstr "Haga clic para editar la contraseña"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:215
+msgid "Click to cancel password editing"
+msgstr "Haga clic para cancelar la edición de la contraseña"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:230
+msgid "Click to clear password"
+msgstr "Haga clic para borrar la contraseña"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:240
+msgid "Confirm password:"
+msgstr "Confirmar contraseña:"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:295
+msgid "Activate a guest user account (no network connection if using Wi-Fi)"
+msgstr ""
+"Activar una cuenta de usuario invitado (sin conexión de red si se usa la "
+"Wifi)"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:326
+msgid "Apply"
+msgstr "Aplicar"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:345
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:364
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:390
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:359
+msgid ""
+"The are pending changes to apply.\n"
+"Do you want apply the changes or discard them?"
+msgstr ""
+"Hay cambios pendientes de aplicar.\n"
+"¿Desea aplicar los cambios o descartarlos?"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:361
+msgid "Discard"
+msgstr "Descartar"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:385
+msgid "Do you want to delete the password for alumnat user?"
+msgstr "¿Desea borrar la contraseña para el usuario alumnat?"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:388
+#: ../lliurex-login-control.install/ui/rsrc/ChangesDialog.qml:76
+msgid "Accept"
+msgstr "Aceptar"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:407
+msgid ""
+"It is necessary to activate the integration with Digital Identitiy to be "
+"able to log in with WIFI GVA"
+msgstr ""
+"Es necesario activar la integración con la Identidad Digital para poder "
+"iniciar sesión con la WIFI GVA"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:410
+msgid "Close"
+msgstr "Cerrar"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:429
+msgid "Changes applied successfully"
+msgstr "Cambios aplicados correctamente"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:431
+msgid ""
+"It is necessary to activate the integration with Digital Identity to be able "
+"to log in with WIFI GVA"
+msgstr ""
+"Es necesario activar la integración con la Identidad Digital para poder "
+"iniciar sesión con la WIFI GVA"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:433
+msgid "Error changing login settings"
+msgstr "Error cambiando la configuración de inicio de sessión"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:435
+msgid "Error changing password for autologin or Easy-Login"
+msgstr ""
+"Error cambiando la contraseña para inicio de sesión con alumnat o Easy-Login"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:437
+msgid "Error changing autogin activation"
+msgstr "Error cambiando la activación del inicio de sesión automático"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:439
+msgid "Multiple errors have ocurred while applying changes"
+msgstr "Se han producido varios errores al aplicar los cambios"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:441
+msgid "Passwords must match"
+msgstr "Las contraseñas deben coincidir"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:443
+msgid "You must enter a password"
+msgstr "Debe introducir una contraseña"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:445
+msgid "Error reloading configuration"
+msgstr "Error recargando la configuración"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:447
+msgid "Error changing guest user activation"
+msgstr "Error cambiando la activación de la cuenta de usuario invitado"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:503
+msgid "Click to show password"
+msgstr "Haga clic para mostrar la contraseña"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:504
+msgid "Click to hide password"
+msgstr "Haga clic para ocultar la contraseña"
+
+#: ../lliurex-login-control.install/ui/rsrc/Loading.qml:60
+msgid "Loading. Wait a moment..."
+msgstr "Cargando. Espere un momento..."
+
+#: ../lliurex-login-control.install/ui/rsrc/Loading.qml:71
+msgid "Error loading configuration"
+msgstr "Error cargando la configuración"

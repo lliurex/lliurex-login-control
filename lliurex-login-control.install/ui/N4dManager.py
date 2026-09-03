@@ -145,7 +145,7 @@ class N4dManager:
 				ret=self._changeEasyLogin(True)
 			else:
 				if self.currentLoginOption in (N4dManager.WifiMode.EASYLOGIN,N4dManager.WifiMode.EASYLOGINWIRED):
-				ret=self._changeEasyLogin(False)
+					ret=self._changeEasyLogin(False)
 								
 			ret=self._changeLogin(currentLoginOption)
 			lastError=ret.get("lastError",None)

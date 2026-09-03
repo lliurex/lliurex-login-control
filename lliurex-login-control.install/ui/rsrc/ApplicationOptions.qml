@@ -47,12 +47,12 @@ RowLayout {
         Layout.fillHeight: true
 
         property int currentIndex: loginControlBridge.currentOptionsStack
-        initialItem:wifiView
+        initialItem:loginView
 
         onCurrentIndexChanged: {
             switch(currentIndex){
                 case 0:
-                    optionsView.replace(wifiView)
+                    optionsView.replace(loginView)
                     break;
             }
         }

@@ -1,0 +1,185 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-03 13:54+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../lliurex-login-control.install/ui/rsrc/ApplicationOptions.qml:24
+msgid "Configuration"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/ApplicationOptions.qml:32
+msgid "Help"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/CustomPopup.qml:71
+msgid "Apply changes. Wait a moment..."
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/CustomPopup.qml:73
+msgid "Restoring previous values. Wait a moment..."
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:32
+msgid "Login configuration"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:50
+msgid "Activate automatic connection to the Wifi (WIFI_EDU) at login"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:72
+msgid "Default access mode:"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:93
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:103
+msgid "Access using user credentials"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:114
+msgid "Automatic login with alumnat user"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:125
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:136
+msgid "Access using Easy-Login"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:154
+msgid "Password for wifi connection with alumnat or Easy-Login:"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:161
+msgid "Password:"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:214
+msgid "Click to edit password"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:215
+msgid "Click to cancel password editing"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:230
+msgid "Click to clear password"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:240
+msgid "Confirm password:"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:295
+msgid "Activate a guest user account (no network connection if using Wi-Fi)"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:326
+msgid "Apply"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:345
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:364
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:390
+msgid "Cancel"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:359
+msgid ""
+"The are pending changes to apply.\n"
+"Do you want apply the changes or discard them?"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:361
+msgid "Discard"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:385
+msgid "Do you want to delete the password for alumnat user?"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:388
+#: ../lliurex-login-control.install/ui/rsrc/ChangesDialog.qml:76
+msgid "Accept"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:407
+msgid ""
+"It is necessary to activate the integration with Digital Identitiy to be "
+"able to log in with WIFI GVA"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:410
+msgid "Close"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:429
+msgid "Changes applied successfully"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:431
+msgid ""
+"It is necessary to activate the integration with Digital Identity to be able "
+"to log in with WIFI GVA"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:433
+msgid "Error changing login settings"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:435
+msgid "Error changing password for autologin or Easy-Login"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:437
+msgid "Error changing autogin activation"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:439
+msgid "Multiple errors have ocurred while applying changes"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:441
+msgid "Passwords must match"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:443
+msgid "You must enter a password"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:445
+msgid "Error reloading configuration"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:447
+msgid "Error changing guest user activation"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:503
+msgid "Click to show password"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:504
+msgid "Click to hide password"
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/Loading.qml:60
+msgid "Loading. Wait a moment..."
+msgstr ""
+
+#: ../lliurex-login-control.install/ui/rsrc/Loading.qml:71
+msgid "Error loading configuration"
+msgstr ""

@@ -292,7 +292,7 @@ Rectangle{
 
         CheckBox {
                 id:enableGuestCb
-                text:i18nd("lliurex-login-control","Activate a guest user account (no network connection, only via Wifi)")
+                text:i18nd("lliurex-login-control","Activate a guest user account (no network connection if using Wi-Fi)")
                 checked:loginControlBridge.isGuestUserEnabled
                 font.pointSize: 10
                 focusPolicy: Qt.NoFocus
