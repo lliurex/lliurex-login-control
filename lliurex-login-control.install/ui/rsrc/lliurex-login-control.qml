@@ -13,9 +13,9 @@ ApplicationWindow {
     
     width: mainLayout.implicitWidth + 2 * margin
     height: mainLayout.implicitHeight + 2 * margin
-    minimumWidth: 680 + 2 * margin
+    minimumWidth: 685 + 2 * margin
     minimumHeight: 580 + 2 * margin
-    maximumWidth: 680 + 2 * margin
+    maximumWidth: 685 + 2 * margin
     maximumHeight: 580 + 2 * margin
 
     Component.onCompleted: {

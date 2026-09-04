@@ -443,6 +443,21 @@ class LliurexLoginControl(QObject):
 			self.isWifiEnabled=value
 			self.currentLoginSettings["isWifiEnabled"]=value
 
+		if value:
+			if self.currentLoginOption==self.n4dMan.WifiMode.EASYLOGINWIRED:
+				newLoginOption=self.n4dMan.WifiMode.EASYLOGIN.value
+			else:
+				newLoginOption=self.n4dMan.WifiMode.ENABLE.value
+		else:
+			if self.currentLoginOption==self.n4dMan.WifiMode.EASYLOGIN:
+				newLoginOption=self.n4dMan.WifiMode.EASYLOGINWIRED.value
+			else:
+				newLoginOption=self.n4dMan.WifiMode.DISABLE.value			
+
+		if newLoginOption!=self.currentLoginOption:
+			self.currentLoginOption=newLoginOption
+			self.currentLoginSettings["currentLoginOption"]=newLoginOption
+			
 		self._manageChanges()
 		self._undoChangesInPassword()
 		self._manageClearPasswordBtn()

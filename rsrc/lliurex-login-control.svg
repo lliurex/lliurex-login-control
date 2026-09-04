@@ -2,14 +2,14 @@
 <svg
    inkscape:export-ydpi="96"
    inkscape:export-xdpi="96"
-   inkscape:export-filename="/home/lliurex/Desarrollo/lliurex-wifi-gva-control/lliurex-wifi-gva-control.install/ui/rsrc/banner.png"
+   inkscape:export-filename="../lliurex-login-control.install/ui/rsrc/banner.png"
    sodipodi:docname="lliurex-wifi-gva-control.svg"
    inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
    id="svg8"
    version="1.1"
-   viewBox="0 0 179.91667 31.750001"
+   viewBox="0 0 181.23959 31.750001"
    height="120"
-   width="680"
+   width="685"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -64,7 +64,7 @@
      showgrid="false"
      inkscape:current-layer="layer1"
      inkscape:document-units="mm"
-     inkscape:cy="237.5"
+     inkscape:cy="238.5"
      inkscape:cx="475"
      inkscape:zoom="1"
      inkscape:pageshadow="2"
@@ -98,12 +98,12 @@
        orientation="0,1"
        position="158.53371,12.1093" />
     <sodipodi:guide
-       position="4.9034099,60.328834"
+       position="4.9034099,60.328835"
        orientation="1,0"
        id="guide862"
        inkscape:locked="false" />
     <sodipodi:guide
-       position="0,61.497099"
+       position="0,61.4971"
        orientation="1,0"
        id="guide1010"
        inkscape:locked="false" />
@@ -153,7 +153,7 @@
        transform="translate(2.6458334)" />
     <g
        id="g4147-2"
-       transform="matrix(0.31201782,0,0,-0.26458333,304.98165,310.88947)"
+       transform="matrix(0.31425816,0,0,-0.26458333,307.19806,310.88947)"
        style="fill:#ffffff">
       <rect
          y="36.495987"
@@ -197,17 +197,17 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.264583;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       x="10.599209"
+       x="7.9533772"
        y="284.61746"
        id="text9164-57-3-3"><tspan
          sodipodi:role="line"
          id="tspan9162-1-6-6"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:SpaceColony-Bold;-inkscape-font-specification:SpaceColony-Bold;fill:#ffffff;stroke:#000000;stroke-width:0.264583;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         x="10.599209"
+         x="7.9533772"
          y="284.61746">Login Control</tspan></text>
     <g
        id="g1312"
-       transform="matrix(0.84693088,0,0,0.84693088,114.14297,41.846123)">
+       transform="matrix(0.84693088,0,0,0.84693088,118.64089,41.846123)">
       <circle
          cx="47.582958"
          cy="282.52466"

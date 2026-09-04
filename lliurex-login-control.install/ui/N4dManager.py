@@ -209,8 +209,9 @@ class N4dManager:
 			self.client.WifiEduGva.set_settings(newLoginOption)
 			self.writeLog("- Result: Changes apply successful")
 		except Exception as e:
+			print(f"ERROR: {e}")
 			self.writeLog(f"- Result: Error applying changes: {e}")
-			result=~{
+			result={
 				"lastError":N4dManager.CHANCE_LOGIN_ERROR,
 				"errorCount":1
 			}
