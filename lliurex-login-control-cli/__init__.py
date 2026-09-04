@@ -128,17 +128,19 @@ class LoginControlCliManager(object):
 			ret=self.n4dClient.WifiEduGva.set_settings(int(loginValue))
 			self._writeLog("- Result: Changes apply successful")
 
-			if loginValue != LoginControlCliManager.WifiMode.AUTOLOGIN:
-				if self.isAutologinConfigured:
-					self._writeLog("- Action: disable autologin")
-					ret=self.n4dClient.AlumnatAccountManager.disable_alumnat_user()
-					self._writeLog("- Result: Changes apply successful")
-			else:
+			if loginValue in (LoginControlCliManager.WifiMode.AUTOLOGIN, LoginControlCliManager.WifiMode.EASYLOGIN):
 				if not self.isAlumnatPasswordConfigured or forcePasswordUpdate:
 					self._writeLog("- Action: set password for alumnat user")
 					ret=self.n4dClient.WifiEduGva.set_autologin(password)
 					self._writeLog("- Result: Changes apply successful")
 
+			if loginValue != LoginControlCliManager.WifiMode.AUTOLOGIN:
+				if self.isAutologinConfigured:
+					self._writeLog("- Action: disable autologin")
+					ret=self.n4dClient.AlumnatAccountManager.disable_alumnat_user()
+					self._writeLog("- Result: Changes apply successful")
+			
+			else:
 				if not self.isAutologinConfigured:
 					self._writeLog("- Action: enable autologin")
 					ret=self.n4dClient.AlumnatAccountManager.enable_alumnat_user()
@@ -149,6 +151,7 @@ class LoginControlCliManager(object):
 			
 			if loginValue not in (LoginControlCliManager.WifiMode.AUTOLOGIN,LoginControlCliManager.WifiMode.EASYLOGIN) and not self.isCDCIntegrationEnabled:
 				print('   [Login-Control]: WARNING It is necessary to activate the integration with ID to be able to log in with WIFI GVA')
+			
 			return 0
 
 		except n4d.client.CallFailedError as e:

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-03 13:54+0200\n"
-"PO-Revision-Date: 2026-09-03 13:55+0200\n"
+"POT-Creation-Date: 2026-09-04 12:36+0200\n"
+"PO-Revision-Date: 2026-09-04 12:36+0200\n"
 "Last-Translator: lliurex <lliurex@gva.es>\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
@@ -44,65 +44,65 @@ msgid "Activate automatic connection to the Wifi (WIFI_EDU) at login"
 msgstr ""
 "Activar conexión automática a la Wifi (WIFI_EDU) en el inicio de sesión"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:72
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:65
 msgid "Default access mode:"
 msgstr "Modo de acceso por defecto:"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:93
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:103
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:86
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:96
 msgid "Access using user credentials"
 msgstr "Acceso mediante credenciales de usuario"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:114
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:107
 msgid "Automatic login with alumnat user"
 msgstr "Inicio automático de sesión con usuario alumnat"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:125
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:136
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:118
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:129
 msgid "Access using Easy-Login"
 msgstr "Acceso mediante Easy-Login"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:154
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:147
 msgid "Password for wifi connection with alumnat or Easy-Login:"
 msgstr "Contraseña para la conexión por Wifi mediante alumnat o Easy-Login:"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:161
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:154
 msgid "Password:"
 msgstr "Contraseña:"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:214
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:207
 msgid "Click to edit password"
 msgstr "Haga clic para editar la contraseña"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:215
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:208
 msgid "Click to cancel password editing"
 msgstr "Haga clic para cancelar la edición de la contraseña"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:230
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:223
 msgid "Click to clear password"
 msgstr "Haga clic para borrar la contraseña"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:240
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:233
 msgid "Confirm password:"
 msgstr "Confirmar contraseña:"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:295
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:288
 msgid "Activate a guest user account (no network connection if using Wi-Fi)"
 msgstr ""
 "Activar una cuenta de usuario invitado (sin conexión de red si se usa la "
 "Wifi)"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:326
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:319
 msgid "Apply"
 msgstr "Aplicar"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:345
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:364
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:390
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:338
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:357
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:383
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:359
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:352
 msgid ""
 "The are pending changes to apply.\n"
 "Do you want apply the changes or discard them?"
@@ -110,20 +110,20 @@ msgstr ""
 "Hay cambios pendientes de aplicar.\n"
 "¿Desea aplicar los cambios o descartarlos?"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:361
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:354
 msgid "Discard"
 msgstr "Descartar"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:385
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:378
 msgid "Do you want to delete the password for alumnat user?"
 msgstr "¿Desea borrar la contraseña para el usuario alumnat?"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:388
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:381
 #: ../lliurex-login-control.install/ui/rsrc/ChangesDialog.qml:76
 msgid "Accept"
 msgstr "Aceptar"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:407
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:400
 msgid ""
 "It is necessary to activate the integration with Digital Identitiy to be "
 "able to log in with WIFI GVA"
@@ -131,15 +131,15 @@ msgstr ""
 "Es necesario activar la integración con la Identidad Digital para poder "
 "iniciar sesión con la WIFI GVA"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:410
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:403
 msgid "Close"
 msgstr "Cerrar"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:429
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:422
 msgid "Changes applied successfully"
 msgstr "Cambios aplicados correctamente"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:431
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:424
 msgid ""
 "It is necessary to activate the integration with Digital Identity to be able "
 "to log in with WIFI GVA"
@@ -147,44 +147,44 @@ msgstr ""
 "Es necesario activar la integración con la Identidad Digital para poder "
 "iniciar sesión con la WIFI GVA"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:433
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:426
 msgid "Error changing login settings"
 msgstr "Error cambiando la configuración de inicio de sessión"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:435
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:428
 msgid "Error changing password for autologin or Easy-Login"
 msgstr ""
 "Error cambiando la contraseña para inicio de sesión con alumnat o Easy-Login"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:437
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:430
 msgid "Error changing autogin activation"
 msgstr "Error cambiando la activación del inicio de sesión automático"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:439
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:432
 msgid "Multiple errors have ocurred while applying changes"
 msgstr "Se han producido varios errores al aplicar los cambios"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:441
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:434
 msgid "Passwords must match"
 msgstr "Las contraseñas deben coincidir"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:443
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:436
 msgid "You must enter a password"
 msgstr "Debe introducir una contraseña"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:445
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:438
 msgid "Error reloading configuration"
 msgstr "Error recargando la configuración"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:447
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:440
 msgid "Error changing guest user activation"
 msgstr "Error cambiando la activación de la cuenta de usuario invitado"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:503
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:496
 msgid "Click to show password"
 msgstr "Haga clic para mostrar la contraseña"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:504
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:497
 msgid "Click to hide password"
 msgstr "Haga clic para ocultar la contraseña"
 

@@ -1,4 +1,4 @@
-Name=zero-lliurex-login-control
+Name=lliurex-login-control
 Name[en]=Login Control
 Name[es]=Login Control
 Name[qcv]=Login Control
@@ -11,6 +11,6 @@ Comment[qcv]=Programa per a configurar diferents opcions d'inici de sessió
 Comment[ca@valencia]=Programa per a configurar diferents opcions d'inici de sessió
 Comment[ca_ES]=Programa per a configurar diferents opcions d'inici de sessió
 Category=Configuration
-Icon=zero-lliurex-login-control
-ScriptPath=zero-lliurex-login-control.zmd
+Icon=lliurex-login-control
+ScriptPath=lliurex-login-control.zmd
 Groups=sudo;admins;teachers
