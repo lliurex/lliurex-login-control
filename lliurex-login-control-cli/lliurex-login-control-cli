@@ -1,0 +1,130 @@
+#! /usr/bin/python3
+import sys
+import os
+import argparse
+
+from logincontrolcli import LoginControlCliManager
+
+if __name__ == '__main__':
+
+    if os.geteuid() != 0:
+        print("   [Login-Control]: You need be root!")
+        sys.exit(1)
+
+    parser = argparse.ArgumentParser(add_help=False)
+    parent_parser=argparse.ArgumentParser(add_help=False)
+
+    def custom_print_help():
+        help_text = (
+            "Usage:\n"
+            "    lliurex-login-control-cli [FLAGS...] ACTION\n\n"
+            "Actions:\n"
+            "    current-config:          Shows information about current login configuration\n"
+            "    enable-wifi              CREDENTIALS|AUTOLOGIN|EASYLOGIN <PASSWORD> <CONFIRM_PASSWORD>: Activate automatic connection to Wifi GVA and set default login option\n"
+            "    disable-wifi:            CREDENTIALS|EASYLOGIN: Disable automatic connection to the Wifi GVA and set default login option\n"
+            "    show-alumnat-password:   Show current password for alumnat user\n"
+            "    update-alumnat-password  <PASSWORD> <CONFIRM_PASSWORD>: Update the password for alumnat user\n"
+            "    remove-alumnat-password: Delete the password for user alumnat\n"
+            "    enable-guest-user:       Enable a guest-user account\n"
+            "    disable-guest-user:      Disable a guest-user account\n"
+            "    n4d-update-password       <ENCODED_PASSWORD>: Update password for alumnat user with n4d-oneshot\n\n"
+            "Flags:\n"
+            "    -h, --help             Show help\n"
+            "    -u, --unattended       Run the actions without prompting for user confirmation"
+        )
+        print(help_text)
+
+    parser.print_help = custom_print_help
+
+    def custom_error(message):
+        print(f"Error: {message}\n", file=sys.stderr)
+        parser.print_help()
+        sys.exit(2)
+
+    parser.error = custom_error
+
+    class HelpAction(argparse.Action):
+        def __call__(self, parser, namespace, values, option_string=None):
+            parser.print_help()
+            sys.exit(0)
+
+    parser.add_argument("-h", "--help", action=HelpAction, nargs=0)
+    parent_parser.add_argument("-u", "--unattended", action="store_true",dest="unattended",default=argparse.SUPPRESS)
+    parser.add_argument("-u", "--unattended", action="store_true",dest="unattended")
+
+    VALID_ACTIONS = [
+        "current-config", "enable-wifi", "disable-wifi", "show-alumnat-password",
+        "update-alumnat-password", "remove-alumnat-password", "enable-guest-user","disable-guest-user","n4d-update-password"
+    ]
+
+    user_args = [arg for arg in sys.argv[1:] if arg not in ["-h", "--help", "-u", "--unattended"]]
+
+    if user_args:
+        potential_action = user_args[0]
+        if potential_action not in VALID_ACTIONS:
+            print(f"Error: Invalid action or unknown parameter: '{potential_action}'\n", file=sys.stderr)
+            parser.print_help()
+            sys.exit(2)
+
+    subparsers = parser.add_subparsers(dest="action", required=True)
+
+    subparsers.add_parser("current-config", parents=[parent_parser])
+
+    parser_enable = subparsers.add_parser("enable-wifi", parents=[parent_parser])
+    parser_enable.add_argument("login_option", choices=["CREDENTIALS", "AUTOLOGIN", "EASYLOGIN"], nargs="?", default="CREDENTIALS")
+    parser_enable.add_argument("password", nargs="?", default="")
+    parser_enable.add_argument("confirm_password", nargs="?", default="")
+
+    parser_disable = subparsers.add_parser("disable-wifi",parents=[parent_parser])
+    parser_disable.add_argument("login_option",choices=["CREDENTIALS","EASYLOGIN"], nargs="?", default="CREDENTIALS")
+    
+    subparsers.add_parser("show-alumnat-password", parents=[parent_parser])
+
+    parser_update = subparsers.add_parser("update-alumnat-password", parents=[parent_parser])
+    parser_update.add_argument("password")
+    parser_update.add_argument("confirm_password")
+
+    subparsers.add_parser("remove-alumnat-password", parents=[parent_parser])
+
+    subparsers.add_parser("enable-guest-user",parents=[parent_parser])
+
+    subparsers.add_parser("disable-guest-user",parents=[parent_parser])
+
+    parser_n4d = subparsers.add_parser("n4d-update-password", parents=[parent_parser])
+    parser_n4d.add_argument("encoded_password")
+
+    try:
+        args = parser.parse_args()
+    except argparse.ArgumentError:
+        parser.print_help()
+        sys.exit(1)
+
+    lc = LoginControlCliManager(args.unattended)
+
+    if args.action == "current-config":
+        sys.exit(lc.showCurrentConfig())
+
+    elif args.action == "enable-wifi":
+        sys.exit(lc.enableWifi(args.login_option, args.password, args.confirm_password))
+
+    elif args.action == "disable-wifi":
+        sys.exit(lc.disableWifi(args.login_option))
+
+    elif args.action == "show-alumnat-password":
+        sys.exit(lc.showAlumnatPassword())
+
+    elif args.action == "update-alumnat-password":
+        sys.exit(lc.updateAlumnatPassword(args.password, args.confirm_password))
+
+    elif args.action == "remove-alumnat-password":
+        sys.exit(lc.removeAlumnatPassword())
+
+    elif args.action == "enable-guest-user":
+        sys.exit(lc.enableGuestUser())
+
+    elif args.action == "disable-guest-user":
+        sys.exit(lc.disableGuestUser())
+
+
+    elif args.action == "n4d-update-password":
+        sys.exit(lc.n4dUpdatePassword(args.encoded_password))

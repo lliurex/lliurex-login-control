@@ -55,14 +55,7 @@ Rectangle{
                 Keys.onEnterPressed: enableWifiCb.toggled()
                 onToggled:{
                     loginControlBridge.manageWifiControl(checked)
-                    if (checked){
-                        loginControlBridge.manageLoginOptions(1)
-                    }else{
-                        loginControlBridge.manageLoginOptions(0)
-                    }
-
                     confirmPasswordValue.text=""
-                   
                 }
 
                 Layout.alignment:Qt.AlignLeft

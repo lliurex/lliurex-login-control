@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools","setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lliurex-login-control-cli"
+version = "0.1"
+description = "Tool to configure some login settings"
+authors = [
+	{ name = "Juan Ramon Pelegrina", email="juapesai@hotmail.com" },
+	{ name = "LliureX Team"}
+]
+license = {text="GPL-3"}
+urls = {repository="https://github.com/lliurex/lliurex-login-control"}
+
+[tool.setuptools]
+packages = ["logincontrolcli"]
+
+[tool.setuptools.package-dir]
+logincontrolcli = "lliurex-login-control-cli"
+
+[tool.setuptools.exclude-package-data]
+logincontrolcli = ["lliurex-login-control-cli"]
+
+[tool.setuptools.data-files]
+"sbin" = ["lliurex-login-control-cli/lliurex-login-control-cli"]

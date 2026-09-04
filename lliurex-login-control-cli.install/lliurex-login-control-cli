@@ -1,0 +1,31 @@
+have lliurex-login-control-cli &&
+_lliurex-login-control-cli()
+{
+    local cur prev opts base
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+    #
+    #  The basic options we'll complete.
+    #
+    opts="current-config enable-wifi disable-wifi show-alumnat-password update-alumnat-password remove-alumnat-password enable-guest-user disable-guest-user help"
+
+    case "${prev}" in 
+        enable-wifi)
+            local running="CREDENTIALS AUTOLOGIN EASYLOGIN"
+            COMPREPLY=( $(compgen -W "${running}" -- ${cur}) )
+            return 0
+            ;;
+        disable-wifi)
+            local running="CREDENTIALS EASYLOGIN"
+            COMPREPLY=( $(compgen -W "${running}" -- ${cur}) )
+            return 0
+            ;;
+        *)
+           COMPREPLY=($(compgen -W "${opts}" -- ${cur}))  
+           return 0
+           ;;
+    esac
+}
+[ "$have" ] && complete -F _lliurex-login-control-cli lliurex-login-control-cli

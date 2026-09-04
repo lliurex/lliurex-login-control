@@ -144,8 +144,7 @@ class N4dManager:
 			if currentLoginOption in (N4dManager.WifiMode.EASYLOGIN,N4dManager.WifiMode.EASYLOGINWIRED):
 				ret=self._changeEasyLogin(True)
 			else:
-				if self.currentLoginOption in (N4dManager.WifiMode.EASYLOGIN,N4dManager.WifiMode.EASYLOGINWIRED):
-					ret=self._changeEasyLogin(False)
+				ret=self._changeEasyLogin(False)
 								
 			ret=self._changeLogin(currentLoginOption)
 			lastError=ret.get("lastError",None)
@@ -288,11 +287,11 @@ class N4dManager:
 
 		try:
 			if isGuestUserEnabled:
-				ret=self.client.GuestAccountManager.enable_guest_user().get('status',False)
+				ret=self.client.GuestAccountManager.enable_guest_user()
 			else:
-				ret=self.client.GuestAccountManager.disable_guest_user().get('status',False)
+				ret=self.client.GuestAccountManager.disable_guest_user()
 
-			if ret:
+			if ret.get('status',False):
 				self.writeLog("- Result: Changes apply successful")
 			else:
 				self.writeLog(f"- Result: Error applying changes: {ret.get('msg')}")
