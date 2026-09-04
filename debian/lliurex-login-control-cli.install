@@ -1,0 +1,3 @@
+lliurex-login-control-cli.install/* /etc/bash_completion.d
+debian/output/usr/sbin/lliurex-login-control-cli /usr/sbin/
+debian/output/usr/lib/python3.12/dist-packages/logincontrolcli/ /usr/lib/python3.12/dist-packages/

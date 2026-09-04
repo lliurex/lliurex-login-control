@@ -1,0 +1,26 @@
+[
+    {
+        "prefix": "net.lliurex.lliurex-login-control-cli",
+        "cmd": "/usr/sbin/lliurex-login-control-cli",
+        "nameaction": "cli",
+        "icon": "lliurex-login-control",
+        "default_auth": {
+            "any": "no",
+            "inactive": "no",
+            "active": "no"
+        },
+        "auths": [
+            {
+                "type": "group",
+                "members": [
+                    "sudo",
+                    "admins"
+                ],
+                "any": "yes",
+                "inactive": "yes",
+                "active": "yes"
+            }
+        ],
+        "requiredx":"false"
+    }
+]

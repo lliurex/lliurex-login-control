@@ -1,0 +1,4 @@
+lliurex-login-control.install/ui/* /usr/share/lliurex-login-control/
+lliurex-login-control.install/launcher/* /usr/sbin
+lliurex-login-control.install/logrotate.d/* /etc/logrotate.d/
+lliurex-login-control.install/rsyslog.d/* /etc/rsyslog.d/
