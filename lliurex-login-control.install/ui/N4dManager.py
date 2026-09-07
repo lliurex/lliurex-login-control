@@ -24,6 +24,7 @@ class N4dManager:
 	ERROR_PASSWORD_EMPTY=-60
 	ERROR_LOADING_CONFIGURATION=-70
 	CHANGE_GUEST_USER_ERROR=-80
+	CHANGE_EASYLOGIN_ERROR=-90
 
 	KIRIGAMI_MSG_OK=0
 	KIRIGAMI_MSG_ERROR=1
@@ -142,13 +143,16 @@ class N4dManager:
 		
 		if changeLogin:
 			if currentLoginOption in (N4dManager.WifiMode.EASYLOGIN,N4dManager.WifiMode.EASYLOGINWIRED):
-				ret=self._changeEasyLogin(True)
+				ret=self._changeEasyLogin("enable")
 			else:
-				ret=self._changeEasyLogin(False)
+				ret=self._changeEasyLogin("disable")
 								
-			ret=self._changeLogin(currentLoginOption)
 			lastError=ret.get("lastError",None)
 			errorCount=errorCount+ret.get("errorCount",0)
+			if ret.get("errorCount",1)==0:
+				ret=self._changeLogin(currentLoginOption)
+				lastError=ret.get("lastError",None)
+				errorCount=errorCount+ret.get("errorCount",0)
 
 		if changePassword:
 			ret=self._changePassword(currentPassword)
@@ -311,10 +315,39 @@ class N4dManager:
 	
 	#def _changeGuestUser
 	
-	def _changeEasyLogin(self,activate):
+	def _changeEasyLogin(self,action):
 		
-		print("TO DO")
-		
+		result={
+			"lastError":None,
+			"errorCount":0 
+		}
+
+		cmd=["easyclientctl",action]
+
+		try:
+			ret=subprocess.run(cmd,capture_output=True,text=True,check=True)
+			if ret.returncode!=0:
+				result={
+					"lastError":N4dManager.CHANGE_EASYLOGIN_ERROR,
+					"errorCount":1
+				}
+		except subprocess.CalledProcessError as e:
+			self.writeLog(f"- ChangeEasyLogin: {action} action error: {e.returncode}")
+			result={
+				"lastError":N4dManager.CHANGE_EASYLOGIN_ERROR,
+				"errorCount":1
+			}
+
+		except FileNotFoundError:
+			self.writeLog(f"- ChangeEasyLogin: {action} action error: Exec not found in the system")
+			result={
+				"lastError":N4dManager.CHANGE_EASYLOGIN_ERROR,
+				"errorCount":1
+			}
+
+
+		return result
+			
 	#def _changeEasyLogin	
 	
 	def writeLog(self,msg):
@@ -332,5 +365,6 @@ class N4dManager:
 			return False
 
 	#def getIntegrationCDCStatus
+
 
 #class N4dManager

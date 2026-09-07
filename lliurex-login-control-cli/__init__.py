@@ -120,9 +120,12 @@ class LoginControlCliManager(object):
 			self._writeLog(f"- Action: activate Wifi connection with login option: {loginValue}")
 			
 			if loginValue==LoginControlCliManager.WifiMode.EASYLOGINWIRED:
-				ret=self._changeEasyLogin(True)
+				ret=self._changeEasyLogin("enable")
 			else:
-				ret=self._changeEasyLogin(False)
+				ret=self._changeEasyLogin("disable")
+			
+			if not ret:
+				return 1
 			
 			self._createClient()
 			ret=self.n4dClient.WifiEduGva.set_settings(int(loginValue))
@@ -187,9 +190,12 @@ class LoginControlCliManager(object):
 			self._writeLog(f"- Action: disable Wifi connection with login option: {loginValue}")
 			
 			if loginValue==LoginControlCliManager.WifiMode.EASYLOGINWIRED:
-				ret=self._changeEasyLogin(True)
+				ret=self._changeEasyLogin("enable")
 			else:
-				ret=self._changeEasyLogin(False)
+				ret=self._changeEasyLogin("disable")
+
+			if not ret:
+				return 1
 
 			self._createClient()
 			ret=self.n4dClient.WifiEduGva.set_settings(int(loginValue))
@@ -509,10 +515,27 @@ class LoginControlCliManager(object):
 
 	#def _checkPassword
 
-	def _changeEasyLogin(self,activate):
-		
-		print("TO DO")
-		
+	def _changeEasyLogin(self,action):
+
+		cmd=["easyclientctl",action]
+
+		try:
+			ret=subprocess.run(cmd,capture_output=True,text=True,check=True)
+			if ret.returncode!=0:
+				return False
+		except subprocess.CalledProcessError as e:
+			print(f'   [Login-Control]: Error. Unable to {action} Easy-Login')
+			self._writeLog(f"- ChangeEasyLogin: {action} action error: {e.returncode}")
+			return False
+
+		except FileNotFoundError:
+			print(f'   [Login-Control]: Error. Unable to {action} Easy-Login')
+			self._writeLog(f"- ChangeEasyLogin: {action} action error: Exec not found in the system")
+			return False
+
+
+		return True
+					
 	#def _changeEasyLogin	
 
 	def _getCurrentUser(self):
