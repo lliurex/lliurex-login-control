@@ -423,7 +423,7 @@ Rectangle{
             case 20:
                 return i18nd("lliurex-login-control","It is necessary to activate the integration with Digital Identity to be able to log in with WIFI GVA")
             case 30:
-                return i18nd("lliurex-login.control","The default login option is configured to use Easy-Login but its activation has failed")
+                return i18nd("lliurex-login-control","The default login option is configured to use Easy-Login but its activation has failed")
             case -10:
                 return i18nd("lliurex-login-control","Error changing login settings")
             case -20:
