@@ -38,6 +38,7 @@ class LoginControlCliManager(object):
 		self.isGuestUserEnabled=False
 		self.currentUser=""
 		self.unattendedMode=mode
+		self.easyLoginActivationFailed=False
 		self.n4dClient=n4d.client.Client()
 		self._getCurrentUser()
 		self._getInfo("Initial")
@@ -60,6 +61,9 @@ class LoginControlCliManager(object):
 		print(f'      - Password for alumnat user configured: {self.isAlumnatPasswordConfigured}')
 
 		print(f'      - Guest user account enabled: {self.isGuestUserEnabled}')
+
+		if self.easyLoginActivationFailed:
+			print('   [Login-Control]: WARNING The default login option is configured to use EASYLOGIN but its activation has failed')
 
 		if self.isWifiConnectionEnabled and self.currentLoginOption not in (LoginControlCliManager.WifiMode.AUTOLOGIN,LoginControlCliManager.WifiMode.EASYLOGIN):
 			if not self.isCDCIntegrationEnabled:
@@ -119,12 +123,14 @@ class LoginControlCliManager(object):
 			self._writeLog("Changes in the login settings")
 			self._writeLog(f"- Action: activate Wifi connection with login option: {loginValue}")
 			
-			if loginValue==LoginControlCliManager.WifiMode.EASYLOGINWIRED:
-				ret=self._changeEasyLogin("enable")
+			if loginValue==LoginControlCliManager.WifiMode.EASYLOGIN:
+				action="enable"
 			else:
-				ret=self._changeEasyLogin("disable")
+				action="disable"
 			
+			ret=self._changeEasyLogin(action)
 			if not ret:
+				print(f'   [Login-Control]: Error. Unable to {action} Easy-Login')
 				return 1
 			
 			self._createClient()
@@ -188,13 +194,16 @@ class LoginControlCliManager(object):
 		try:
 			self._writeLog("Changes in the login settings:")
 			self._writeLog(f"- Action: disable Wifi connection with login option: {loginValue}")
-			
+
 			if loginValue==LoginControlCliManager.WifiMode.EASYLOGINWIRED:
-				ret=self._changeEasyLogin("enable")
+				action="enable"
 			else:
-				ret=self._changeEasyLogin("disable")
+				action="disable"
+			
+			ret=self._changeEasyLogin(action)
 
 			if not ret:
+				print(f'   [Login-Control]: Error. Unable to {action} Easy-Login')
 				return 1
 
 			self._createClient()
@@ -407,6 +416,8 @@ class LoginControlCliManager(object):
 
 	def _getInfo(self,step="Initial"):
 
+		self.easyLoginActivationFailed=False
+
 		try:
 			self._writeLog(f"Login Control. {step} configuration")
 			wifiConfiguration=self.n4dClient.WifiEduGva.get_settings()
@@ -433,6 +444,13 @@ class LoginControlCliManager(object):
 			self._writeLog(f"- Current Login Option: {wifiConfiguration}")
 			self._writeLog(f"- Password for alumnat user configured: {self.isAlumnatPasswordConfigured}")
 			self._writeLog(f"- Guest User account enabled: {self.isGuestUserEnabled}")
+			
+			if step=="Initial":
+				if self.currentLoginOption in (LoginControlCliManager.WifiMode.EASYLOGIN,LoginControlCliManager.WifiMode.EASYLOGINWIRED):
+					if not self._getEasyLoginStatus():
+						if not self._changeEasyLogin("enable"):
+							self.easyLoginActivationFailed=True
+							self._writeLog(f"- Guest User account enabled: {self.isGuestUserEnabled}")
 			return True
 
 		except Exception as e:
@@ -515,6 +533,25 @@ class LoginControlCliManager(object):
 
 	#def _checkPassword
 
+	def _getEasyLoginStatus(self):
+
+		cmd=["easyclientctl","status"]
+
+		try:
+			ret=subprocess.run(cmd,capture_output=True,text=True,check=True)
+			if ret.returncode==0:
+				return True
+		
+		except subprocess.CalledProcessError as e:
+			self._writeLog(f"- StatusEasyLogin: get status error: {e.returncode}")
+
+		except FileNotFoundError:
+			self._writeLog(f"- StatusEasyLogin: get status error: Exec not found in the system")
+
+		return False
+
+	#def _getEasyLoginStatus
+
 	def _changeEasyLogin(self,action):
 
 		cmd=["easyclientctl",action]
@@ -524,15 +561,12 @@ class LoginControlCliManager(object):
 			if ret.returncode!=0:
 				return False
 		except subprocess.CalledProcessError as e:
-			print(f'   [Login-Control]: Error. Unable to {action} Easy-Login')
 			self._writeLog(f"- ChangeEasyLogin: {action} action error: {e.returncode}")
 			return False
 
 		except FileNotFoundError:
-			print(f'   [Login-Control]: Error. Unable to {action} Easy-Login')
 			self._writeLog(f"- ChangeEasyLogin: {action} action error: Exec not found in the system")
 			return False
-
 
 		return True
 					

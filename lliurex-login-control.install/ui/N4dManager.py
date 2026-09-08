@@ -16,6 +16,7 @@ class N4dManager:
 
 	APPLY_CHANGES_SUCCESSFUL=10
 	WARNING_CDC_ACTIVATION_REQUIRED=20
+	WARNING_EASYLOGIN_ACTIVATION=30
 	CHANCE_LOGIN_ERROR=-10
 	CHANGE_AUTOLOGIN_PASSWORD_ERROR=-20
 	CHANGE_AUTOLOGIN_STATUS_ERROR=-30
@@ -96,7 +97,15 @@ class N4dManager:
 		}
 
 		self.writeLog(f"- Current Login Option: {self.currentLoginOption}")
-		self.writeLog(f"- Autologin: {self.currentAutologinStatus}")
+		self.writeLog(f"- Guest User account enabled: {self.isGuestUserEnabled}")
+		
+		if step=="Initial":
+			if loginOption in (N4dManager.WifiMode.EASYLOGIN, N4dManager.WifiMode.EASYLOGINWIRED):
+				isEasyLoginEnabled=self._getEasyLoginStatus()
+				if not isEasyLoginEnabled:
+					ret=self._changeEasyLogin("enable")
+					if ret.get("errorCount",1)!=0:
+						return {"status":True,"code":N4dManager.WARNING_EASYLOGIN_ACTIVATION,"type":N4dManager.KIRIGAMI_MSG_WARNING}
 			
 		return {"status":True,"code":"","type":""}
 
@@ -314,6 +323,25 @@ class N4dManager:
 		return result
 	
 	#def _changeGuestUser
+
+	def _getEasyLoginStatus(self):
+
+		cmd=["easyclientctl","status"]
+
+		try:
+			ret=subprocess.run(cmd,capture_output=True,text=True,check=True)
+			if ret.returncode==0:
+				return True
+		
+		except subprocess.CalledProcessError as e:
+			self.writeLog(f"- StatusEasyLogin: get status error: {e.returncode}")
+
+		except FileNotFoundError:
+			self.writeLog(f"- StatusEasyLogin: get status error: Exec not found in the system")
+
+		return False
+
+	#def _getEasyLoginStatus
 	
 	def _changeEasyLogin(self,action):
 		
