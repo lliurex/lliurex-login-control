@@ -394,6 +394,8 @@ class LliurexLoginControl(QObject):
 			else:
 				self.showSettingsMessage={"show":True,"msgCode":ret.get("code"),"type":ret.get("type")}
 		else:
+			if ret.get("code"):
+				self.showSettingsMessage={"show":True,"msgCode":ret.get("code"),"type":ret.get("type")}
 			self._loadVars()
 			self.currentStack=1
 
@@ -421,7 +423,7 @@ class LliurexLoginControl(QObject):
 		else:
 			if self.isWifiEnabled and not self.n4dMan.getIntegrationCDCStatus():
 				self.showSettingsMessage={"show":True,"msgCode":self.n4dMan.WARNING_CDC_ACTIVATION_REQUIRED,"type":self.n4dMan.KIRIGAMI_MSG_WARNING}
-			
+
 			self._manageClearPasswordBtn()
 
 	#def _loadVars

@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-04 12:36+0200\n"
-"PO-Revision-Date: 2026-09-04 12:37+0200\n"
+"POT-Creation-Date: 2026-09-08 09:52+0200\n"
+"PO-Revision-Date: 2026-09-08 09:54+0200\n"
 "Last-Translator: lliurex <lliurex@gva.es>\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
@@ -144,45 +144,57 @@ msgstr ""
 "iniciar sessió amb la WIFI GVA"
 
 #: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:426
+msgid ""
+"The default login option is configured to use Easy-Login but its activation "
+"has failed"
+msgstr ""
+"El mode d'accés per defecte esta configurat per a usar Easy-Login però la "
+"seua activació ha fallat"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:428
 msgid "Error changing login settings"
 msgstr "S’ha produït un error canviant la configuració d'inici de sessió"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:428
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:430
 msgid "Error changing password for autologin or Easy-Login"
 msgstr ""
 "S’ha produït un error canviant la contrasenya per a alumnat o Easy-Login"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:430
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:432
 msgid "Error changing autogin activation"
 msgstr ""
 "S’ha produït un error canviant l'activació de l'inici de sessió automàtic"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:432
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:434
 msgid "Multiple errors have ocurred while applying changes"
 msgstr "S'han produït diversos errors en aplicar els canvis"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:434
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:436
 msgid "Passwords must match"
 msgstr "Les contrasenyes han de coincidir"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:436
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:438
 msgid "You must enter a password"
 msgstr "Introduïu una contrasenya"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:438
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:440
 msgid "Error reloading configuration"
 msgstr "S’ha produït un error recarregant la configuració"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:440
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:442
 msgid "Error changing guest user activation"
 msgstr ""
 "S’ha produït un error canviant l'activació del compte d'usuari convidat"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:496
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:444
+msgid "Error changing easy-login activation"
+msgstr "S’ha produït un error canviant l'activació de Easy-Login"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:500
 msgid "Click to show password"
 msgstr "Feu clic per a mostrar la contrasenya"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:497
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:501
 msgid "Click to hide password"
 msgstr "Feu clic per a ocultar la contrasenya"
 
