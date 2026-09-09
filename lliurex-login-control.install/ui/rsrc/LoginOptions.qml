@@ -424,24 +424,31 @@ Rectangle{
                 return i18nd("lliurex-login-control","It is necessary to activate the integration with Digital Identity to be able to log in with WIFI GVA")
             case 30:
                 return i18nd("lliurex-login-control","The default login option is configured to use Easy-Login but its activation has failed")
+            case 40:
+                return i18nd("lliurex-login-control","The default login option is configured to use Auto-Login but its activation has failed")
             case -10:
-                return i18nd("lliurex-login-control","Error changing login settings")
-            case -20:
-                return i18nd("lliurex-login-control","Error changing password for autologin or Easy-Login")
-            case -30:
-                return i18nd("lliurex-login-control","Error changing autogin activation")
-            case -40:
-                return i18nd("lliurex-login-control","Multiple errors have ocurred while applying changes")
-            case -50:
-                return i18nd("lliurex-login-control","Passwords must match")
-            case -60:
-                return i18nd("lliurex-login-control","You must enter a password")
-            case -70:
                 return i18nd("lliurex-login-control","Error reloading configuration")
-            case -80:
+            case -20:
+                return i18nd("lliurex-login-control","Error changing login settings")
+            case -30:
+                return i18nd("lliurex-login-control","Error 
+                activating Auto-Login")
+            case -40:
+                return i18nd("lliurex-login-control","The Auto-Login setting could not be disabled")
+            case -50:
+                return i18nd("lliurex-login-control","Error activating Easy-Login")
+            case -60:
+                return i18nd("lliurex-login-control","The Easy-Login setting could not be disabled")
+            case -70:
                 return i18nd("lliurex-login-control","Error changing guest user activation")
+            case -80:
+                return i18nd("lliurex-login-control","Multiple errors have ocurred while applying changes")
             case -90:
-                return i18nd("lliurex-login-control","Error changing easy-login activation")
+                return i18nd("lliurex-login-control","Passwords must match")
+            case -100:
+                return i18nd("lliurex-login-control","You must enter a password")
+            case -110:
+                return i18nd("lliurex-login-control","Error changing password for Auto-Login or Easy-Login")
             default:
                 return ""
         }

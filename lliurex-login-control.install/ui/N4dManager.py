@@ -17,15 +17,20 @@ class N4dManager:
 	APPLY_CHANGES_SUCCESSFUL=10
 	WARNING_CDC_ACTIVATION_REQUIRED=20
 	WARNING_EASYLOGIN_ACTIVATION=30
-	CHANCE_LOGIN_ERROR=-10
-	CHANGE_AUTOLOGIN_PASSWORD_ERROR=-20
-	CHANGE_AUTOLOGIN_STATUS_ERROR=-30
-	CHANGE_MULTIPLE_ERROR=-40
-	ERROR_PASSWORDS_NOT_MATCH=-50
-	ERROR_PASSWORD_EMPTY=-60
-	ERROR_LOADING_CONFIGURATION=-70
-	CHANGE_GUEST_USER_ERROR=-80
-	CHANGE_EASYLOGIN_ERROR=-90
+	WARNING_AUTOLOGIN_ACTIVATION=40
+
+	ERROR_LOADING_CONFIGURATION=-10
+	CHANCE_LOGIN_ERROR=-20
+	ERROR_ACTIVATING_AUTOLOGIN=-30
+	ERROR_DEACTIVATING_AUTOLOGIN=-40
+	ERROR_ACTIVATING_EASYLOGIN=-50
+	ERROR_DEACTIVATING_EASYLOGIN=-60
+	CHANGE_GUEST_USER_ERROR=-70
+	CHANGE_MULTIPLE_ERROR=-80
+	ERROR_PASSWORDS_NOT_MATCH=-90
+	ERROR_PASSWORD_EMPTY=-100
+	ERROR_CHANGING_PASSWORD=-110
+
 
 	KIRIGAMI_MSG_OK=0
 	KIRIGAMI_MSG_ERROR=1
@@ -49,8 +54,9 @@ class N4dManager:
 		self.isWifiEnabled=False
 		self.currentLoginOption=1
 		self.currentPassword=""
-		self.currentAutologinStatus=False
+		self.isAutoLoginEnabled=False
 		self.isGuestUserEnabled=False
+		self.isEasyLoginEnabled=False
 		
 	#def __init__
 
@@ -66,153 +72,141 @@ class N4dManager:
 	
 	#def setServer
 
-	def loadConfig(self,step="Initial"):
+	def loadConfig(self, step="Initial"):
+
+		self.writeLog(f"Login Control. {step} configuration:")
 
 		try:
-			self.writeLog(f"Login Control. {step} configuration:")
-			loginOption=self.client.WifiEduGva.get_settings()
-			wifiPassword=self.client.WifiEduGva.get_autologin()
-			self.currentAutologinStatus=self._checkIfAutologinIsEnabled()
-			self.isGuestUserEnabled=self._checkIfGuestUserIsEnabled()
+			loginOption = self.client.WifiEduGva.get_settings()
+			wifiPassword = self.client.WifiEduGva.get_autologin()
+			self.isAutoLoginEnabled = self._getAutoLoginStatus()
+			self.isGuestUserEnabled = self._getGuestUserStatus()
+			self.isEasyLoginEnabled = self._getEasyLoginStatus()
 		except Exception as e:
 			self.writeLog(f"- Error loading configuration: {e}")
-			return {"status":False,"code":N4dManager.ERROR_LOADING_CONFIGURATION,"type":N4dManager.KIRIGAMI_MSG_ERROR}
+			return {"status": False, "code": N4dManager.ERROR_LOADING_CONFIGURATION, "type": N4dManager.KIRIGAMI_MSG_ERROR}
 
 		if loginOption in N4dManager.WifiMode.__members__.values():
-			if loginOption in (N4dManager.WifiMode.DISABLE,N4dManager.WifiMode.EASYLOGINWIRED):
-				self.isWifiEnabled=False
-			else:
-				self.isWifiEnabled=True
+			self.isWifiEnabled = loginOption not in (N4dManager.WifiMode.DISABLE, N4dManager.WifiMode.EASYLOGINWIRED)
+			self.currentLoginOption = loginOption
+		else:
+			self.isWifiEnabled = getattr(self, "isWifiEnabled", False)
+			self.currentLoginOption = getattr(self, "currentLoginOption", None)
 
-			self.currentLoginOption=loginOption
-			
 		if wifiPassword is not None:
-			self.currentPassword=wifiPassword
+			self.currentPassword = wifiPassword
+		elif not hasattr(self, "currentPassword"):
+			self.currentPassword = ""
 
-		self.currentLoginSettings={
-			"isWifiEnabled":self.isWifiEnabled,
-			"currentLoginOption":self.currentLoginOption,
-			"currentPassword":wifiPassword if wifiPassword is not None else "",
-			"isGuestUserEnabled":self.isGuestUserEnabled
+		self.currentLoginSettings = {
+			"isWifiEnabled": self.isWifiEnabled,
+			"currentLoginOption": self.currentLoginOption,
+			"currentPassword": self.currentPassword,
+			"isGuestUserEnabled": self.isGuestUserEnabled
 		}
 
 		self.writeLog(f"- Current Login Option: {self.currentLoginOption}")
 		self.writeLog(f"- Guest User account enabled: {self.isGuestUserEnabled}")
-		
-		if step=="Initial":
+
+		if step == "Initial":
 			if loginOption in (N4dManager.WifiMode.EASYLOGIN, N4dManager.WifiMode.EASYLOGINWIRED):
-				isEasyLoginEnabled=self._getEasyLoginStatus()
-				if not isEasyLoginEnabled:
-					ret=self._changeEasyLogin("enable")
-					if ret.get("errorCount",1)!=0:
-						return {"status":True,"code":N4dManager.WARNING_EASYLOGIN_ACTIVATION,"type":N4dManager.KIRIGAMI_MSG_WARNING}
-			
-		return {"status":True,"code":"","type":""}
+				if not self.isEasyLoginEnabled:
+					ret = self._changeEasyLogin("enable")
+					if not ret.get("status"):
+						return {"status": True, "code": N4dManager.WARNING_EASYLOGIN_ACTIVATION, "type": N4dManager.KIRIGAMI_MSG_WARNING}
+					self.isEasyLoginEnabled = self._getEasyLoginStatus()
+
+			elif loginOption == N4dManager.WifiMode.AUTOLOGIN:
+				if not self.isAutoLoginEnabled:
+					ret = self._changeAutoLogin(0)
+					if not ret.get("status"):
+						return {"status": True, "code": N4dManager.WARNING_AUTOLOGIN_ACTIVATION, "type": N4dManager.KIRIGAMI_MSG_WARNING}
+					self.isAutoLoginEnabled = self._getAutoLoginStatus()
+
+		return {"status": True, "code": "", "type": ""}
 
 	#def loadConfig
 
 	def applyChanges(self, info, confirmPasswordEntry):
 
-		'''
-		Actions in autologin:
-			- -1: Nothing
-			-  0: Enabled
-			-  1: Disabled
-			-  2: Updated Password
-		'''
-
-		changeLogin = False
-		changePassword = False
-		lastError = None
-		actionAutologin = -1
-		errorCount = 0
-
 		currentPassword = info.get('currentPassword')
-		confirmPassword = confirmPasswordEntry
-		currentLoginOption=info.get("currentLoginOption")
-		isGuestUserEnabled= info.get("isGuestUserEnabled")
+		currentLoginOption = info.get("currentLoginOption")
+		isGuestUserEnabled = info.get("isGuestUserEnabled")
 
-		if currentLoginOption in (N4dManager.WifiMode.AUTOLOGIN,N4dManager.WifiMode.EASYLOGIN):
+		if currentLoginOption in (N4dManager.WifiMode.AUTOLOGIN, N4dManager.WifiMode.EASYLOGIN):
 			if not currentPassword:
 				return {"status": False, "code": N4dManager.ERROR_PASSWORD_EMPTY, "type": N4dManager.KIRIGAMI_MSG_ERROR}
-			if (currentPassword != self.currentPassword) and (currentPassword != confirmPassword):
+			if currentPassword != self.currentPassword and currentPassword != confirmPasswordEntry:
 				return {"status": False, "code": N4dManager.ERROR_PASSWORDS_NOT_MATCH, "type": N4dManager.KIRIGAMI_MSG_ERROR}
 
+		actions = []
+
 		if currentLoginOption != self.currentLoginOption:
-			changeLogin = True
 			if currentLoginOption == N4dManager.WifiMode.AUTOLOGIN:
-				actionAutologin = 0
-			elif self.currentAutologinStatus:
-				actionAutologin = 1
+				actions.append(lambda: self._changeAutoLogin(0))
+			elif currentLoginOption in (N4dManager.WifiMode.EASYLOGIN, N4dManager.WifiMode.EASYLOGINWIRED):
+				actions.append(lambda: self._changeEasyLogin("enable"))
 
-		if currentPassword != self.currentPassword:
-			changePassword = True
-			if currentLoginOption ==N4dManager.WifiMode.AUTOLOGIN and actionAutologin == -1:
-				actionAutologin = 2 if self.currentAutologinStatus else 0
-		
-		if changeLogin:
-			if currentLoginOption in (N4dManager.WifiMode.EASYLOGIN,N4dManager.WifiMode.EASYLOGINWIRED):
-				ret=self._changeEasyLogin("enable")
-			else:
-				ret=self._changeEasyLogin("disable")
-								
-			lastError=ret.get("lastError",None)
-			errorCount=errorCount+ret.get("errorCount",0)
-			if ret.get("errorCount",1)==0:
-				ret=self._changeLogin(currentLoginOption)
-				lastError=ret.get("lastError",None)
-				errorCount=errorCount+ret.get("errorCount",0)
+			actions.append(lambda: self._changeLogin(currentLoginOption))
 
-		if changePassword:
-			ret=self._changePassword(currentPassword)
-			lastError=ret.get("lastError",None)
-			errorCount=errorCount+ret.get("errorCount",0)
+			if currentLoginOption == N4dManager.WifiMode.AUTOLOGIN and self.isEasyLoginEnabled:
+				actions.append(lambda: self._changeEasyLogin("disable"))
+			elif currentLoginOption in (N4dManager.WifiMode.EASYLOGIN, N4dManager.WifiMode.EASYLOGINWIRED) and self.isAutoLoginEnabled:
+				actions.append(lambda: self._changeAutoLogin(1))
+			elif currentLoginOption not in (N4dManager.WifiMode.AUTOLOGIN, N4dManager.WifiMode.EASYLOGIN, N4dManager.WifiMode.EASYLOGINWIRED):
+				if self.isAutoLoginEnabled: actions.append(lambda: self._changeAutoLogin(1))
+				if self.isEasyLoginEnabled: actions.append(lambda: self._changeEasyLogin("disable"))
 
-		if actionAutologin != -1:
-			ret=self._changeAutoLogin(actionAutologin)
-			lastError=ret.get("lastError",None)
-			errorCount=errorCount+ret.get("errorCount",0)
+		if currentPassword and currentPassword != self.currentPassword:
+			actions.append(lambda: self._changePassword(currentPassword))
 
 		if isGuestUserEnabled != self.isGuestUserEnabled:
-			ret=self._changeGuestUser(isGuestUserEnabled)
-			lastError=ret.get("lastError",None)
-			errorCount=errorCount+ret.get("errorCount",0)
+			actions.append(lambda: self._changeGuestUser(isGuestUserEnabled))
+
+		errorCount = 0
+		lastError = None
+
+		for action in actions:
+			ret = action()
+			if not ret.get("status"):
+				errorCount += 1
+				lastError = ret.get("lastError")
 
 		if errorCount > 1:
 			return {"status": False, "code": N4dManager.CHANGE_MULTIPLE_ERROR, "type": N4dManager.KIRIGAMI_MSG_ERROR}
 		if errorCount == 1:
-			return {"status": False, "code": lastError, "type": N4dManager.KIRIGAMI_MSG_ERROR}
+			if lastError not in (N4dManager.ERROR_DEACTIVATING_AUTOLOGIN,N4dManager.ERROR_DEACTIVATING_EASYLOGIN):
+				return {"status": False, "code": lastError, "type": N4dManager.KIRIGAMI_MSG_ERROR}
 
 		self.loadConfig("End")
+		
+		if lastError in (N4dManager.ERROR_DEACTIVATING_AUTOLOGIN,N4dManager.ERROR_DEACTIVATING_EASYLOGIN):
+			return {"status": True, "code": lastError, "type": N4dManager.KIRIGAMI_MSG_WARNING}
 
 		return {"status": True, "code": N4dManager.APPLY_CHANGES_SUCCESSFUL, "type": N4dManager.KIRIGAMI_MSG_OK}
 
+
 	#def applyChanges
 
-	def _checkIfAutologinIsEnabled(self):
+	def _getAutoLoginStatus(self):
 
 		try:
 			return self.client.AlumnatAccountManager.get_alumnat_status().get('status',False)
 		except Exception:
 			return False
 
-	#def _checkIfAutologinIsEnabled
+	#def _getAutoLoginStatus
 
-	def _checkIfGuestUserIsEnabled(self):
+	def _getGuestUserStatus(self):
 
 		try:
 			return self.client.GuestAccountManager.get_guest_status().get("status", False)
 		except Exception:
 			return False
 
-	#def _checkIfGuestUserIsEnabled
+	#def _getGuestUserStatus
 
 	def _changeLogin(self,newLoginOption):
-
-		result={
-			"lastError":None,
-			"errorCount":0 
-		}
 
 		self.writeLog("Changes in login configuration:")
 		self.writeLog(f"- Action: Changed login Option to: {newLoginOption}")
@@ -220,25 +214,22 @@ class N4dManager:
 		try:
 			self.client.WifiEduGva.set_settings(newLoginOption)
 			self.writeLog("- Result: Changes apply successful")
+			return {
+				"status":True,
+				"lastError":None
+			}
 		except Exception as e:
 			print(f"ERROR: {e}")
 			self.writeLog(f"- Result: Error applying changes: {e}")
-			result={
+			return {
+				"status":False,
 				"lastError":N4dManager.CHANCE_LOGIN_ERROR,
-				"errorCount":1
 			}
-
-		return result
 
 	#def _changeLogin
 
 	def _changePassword(self, newPassword):
 
-		result={
-			"lastError":None,
-			"errorCount":0 
-		}
-		
 		self.writeLog("Changes in autologin password:")
 		action_text = "Update password" if newPassword else "Clear password"
 		self.writeLog(f"- Action: {action_text}")
@@ -246,55 +237,55 @@ class N4dManager:
 		try:
 			self.client.WifiEduGva.set_autologin(newPassword)
 			self.writeLog("- Result: changes apply successful")
+			return {
+				"status":True,
+				"lastError":None
+			}
 		except Exception as e:
 			self.writeLog(f"- Result: Error applying changes: {e}")
-			result={
-				"lastError":N4dManager.CHANGE_AUTOLOGIN_PASSWORD_ERROR,
-				"errorCount":1
+			return {
+				"status":False,
+				"lastError":N4dManager.CHANGE_AUTOLOGIN_PASSWORD_ERROR
 			}
-
-		return result
 
 	#def _changePassword
 
-	def _changeAutoLogin(self, actionAutologin):
-
-		result={
-			"lastError":None,
-			"errorCount":0 
-		}
+	def _changeAutoLogin(self, actionAutoLogin):
 
 		self.writeLog("Changes in autologin")
+	
 		try:
-			if actionAutologin == 0:
+			if actionAutoLogin == 0:
 				self.writeLog("- Action: Enable autologin")
-				self.client.AlumnatAccountManager.enable_alumnat_user()
-			elif actionAutologin == 1:
+				lastError=N4dManager.ERROR_ACTIVATING_AUTOLOGIN
+				ret=self.client.AlumnatAccountManager.enable_alumnat_user()
+			elif actionAutoLogin == 1:
 				self.writeLog("- Action: Disable autologin")
-				self.client.AlumnatAccountManager.disable_alumnat_user()
-			elif actionAutologin == 2:
-				self.writeLog("- Action: Updated password")
-				self.client.AlumnatAccountManager.fix_alumnat_password()
+				lastError=N4dManager.ERROR_DEACTIVATING_AUTOLOGIN
+				ret=self.client.AlumnatAccountManager.disable_alumnat_user()
 
-			self.writeLog("- Result: Changes apply successful")
+			if ret.get("status",False):
+				self.writeLog("- Result: Changes apply successful")
+				return {
+					"status":True,
+					"lastError":None
+				}
+			else:
+				self.writeLog(f"- Result: Error applying changes: {ret.get('msg')}")
+
 		except Exception as e:
 			self.writeLog(f"- Result: Error applying changes: {e}")
-			result={
-				"lastError":N4dManager.CHANGE_AUTOLOGIN_STATUS_ERROR,
-				"errorCount":1
-			}
 
-		return result
+		return {
+			"status":False,
+			"lastError": lastError
+		}
 
 	#def _changeAutoLogin
 
 	def _changeGuestUser(self,isGuestUserEnabled):
 
-		result={
-			"lastError":None,
-			"errorCount":0 
-		}
-
+	
 		self.writeLog("Changes in guest-user:")
 		self.writeLog(f"- Action: Activate guest-user: {isGuestUserEnabled}")
 
@@ -306,21 +297,21 @@ class N4dManager:
 
 			if ret.get('status',False):
 				self.writeLog("- Result: Changes apply successful")
+				return {
+					"status":True,
+					"lastError":None,
+				}
+
 			else:
 				self.writeLog(f"- Result: Error applying changes: {ret.get('msg')}")
-				result={
-					"lastError":N4dManager.CHANGE_GUEST_USER_ERROR,
-					"errorCount": 1
-				}
-
+	
 		except Exception as e:
 			self.writeLog(f"- Result: Error applying changes: {e}")
-			result={
-				"lastError":N4dManager.CHANGE_GUEST_USER_ERROR,
-				"errorCount": 1
-				}
 
-		return result
+		return {
+			"status":False,
+			"lastError":N4dManager.CHANGE_GUEST_USER_ERROR
+		}
 	
 	#def _changeGuestUser
 
@@ -330,8 +321,7 @@ class N4dManager:
 
 		try:
 			ret=subprocess.run(cmd,capture_output=True,text=True,check=True)
-			if ret.returncode==0:
-				return True
+			return True
 		
 		except subprocess.CalledProcessError as e:
 			self.writeLog(f"- StatusEasyLogin: get status error: {e.returncode}")
@@ -345,37 +335,31 @@ class N4dManager:
 	
 	def _changeEasyLogin(self,action):
 		
-		result={
-			"lastError":None,
-			"errorCount":0 
-		}
-
 		cmd=["easyclientctl",action]
+
+		if action=="enable":
+			lastError=N4dManager.ERROR_ACTIVATING_EASYLOGIN
+		else:
+			lastError=N4dManager.ERROR_DEACTIVATING_EASYLOGIN
 
 		try:
 			ret=subprocess.run(cmd,capture_output=True,text=True,check=True)
-			if ret.returncode!=0:
-				result={
-					"lastError":N4dManager.CHANGE_EASYLOGIN_ERROR,
-					"errorCount":1
-				}
+			return {
+				"status":True,
+				"lastError":None,
+			}
+	
 		except subprocess.CalledProcessError as e:
 			self.writeLog(f"- ChangeEasyLogin: {action} action error: {e.returncode}")
-			result={
-				"lastError":N4dManager.CHANGE_EASYLOGIN_ERROR,
-				"errorCount":1
-			}
-
+	
 		except FileNotFoundError:
 			self.writeLog(f"- ChangeEasyLogin: {action} action error: Exec not found in the system")
-			result={
-				"lastError":N4dManager.CHANGE_EASYLOGIN_ERROR,
-				"errorCount":1
-			}
 
+		return {
+			"status":False,
+			"lastError":lastError
+		}
 
-		return result
-			
 	#def _changeEasyLogin	
 	
 	def writeLog(self,msg):
