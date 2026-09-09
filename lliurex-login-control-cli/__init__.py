@@ -36,9 +36,12 @@ class LoginControlCliManager(object):
 		self.currentAlumnatPassword=None
 		self.isCDCIntegrationEnabled=False
 		self.isGuestUserEnabled=False
+		self.isAutologinConfigured=False
+		self.isEasyLoginConfigured=False
 		self.currentUser=""
 		self.unattendedMode=mode
 		self.easyLoginActivationFailed=False
+		self.autoLoginActivationFailed=False
 		self.n4dClient=n4d.client.Client()
 		self._getCurrentUser()
 		self._getInfo("Initial")
@@ -64,6 +67,9 @@ class LoginControlCliManager(object):
 
 		if self.easyLoginActivationFailed:
 			print('   [Login-Control]: WARNING The default login option is configured to use EASYLOGIN but its activation has failed')
+
+		if self.autoLoginActivationFailed:
+			print('   [Login-Control]: WARNING The default login option is configured to use AUTOLOGIN but its activation has failed')
 
 		if self.isWifiConnectionEnabled and self.currentLoginOption not in (LoginControlCliManager.WifiMode.AUTOLOGIN,LoginControlCliManager.WifiMode.EASYLOGIN):
 			if not self.isCDCIntegrationEnabled:
@@ -123,19 +129,24 @@ class LoginControlCliManager(object):
 			self._writeLog("Changes in the login settings")
 			self._writeLog(f"- Action: activate Wifi connection with login option: {loginValue}")
 			
-			if loginValue==LoginControlCliManager.WifiMode.EASYLOGIN:
-				action="enable"
-			else:
-				action="disable"
-			
-			ret=self._changeEasyLogin(action)
-			if not ret:
-				print(f'   [Login-Control]: Error. Unable to {action} Easy-Login')
-				return 1
-			
+			ret=True
 			self._createClient()
-			ret=self.n4dClient.WifiEduGva.set_settings(int(loginValue))
-			self._writeLog("- Result: Changes apply successful")
+
+			if loginValue==LoginControlCliManager.WifiMode.EASYLOGIN:
+				if not self.isEasyLoginConfigured:
+					ret=self._changeEasyLogin("enable")
+					if not ret:
+						print(f'   [Login-Control]: Error. Unable to enable Easy-Login')
+						return 1
+			elif loginValue==LoginControlCliManager.WifiMode.AUTOLOGIN:
+				if not self.isAutologinConfigured:
+					self._writeLog("- Action: enable autologin")
+					ret=self.n4dClient.AlumnatAccountManager.enable_alumnat_user()
+					if not ret.get('status',False):
+						print(f'   [Login-Control]: Error. Unable to enable Auto-Login')
+						return 1
+
+					self._writeLog("- Result: Changes apply successful")
 
 			if loginValue in (LoginControlCliManager.WifiMode.AUTOLOGIN, LoginControlCliManager.WifiMode.EASYLOGIN):
 				if not self.isAlumnatPasswordConfigured or forcePasswordUpdate:
@@ -143,19 +154,26 @@ class LoginControlCliManager(object):
 					ret=self.n4dClient.WifiEduGva.set_autologin(password)
 					self._writeLog("- Result: Changes apply successful")
 
+			ret=self.n4dClient.WifiEduGva.set_settings(int(loginValue))
+			self._writeLog("- Result: Changes apply successful")
+			print('   [Login-Control]: Action completed successfull')
+
 			if loginValue != LoginControlCliManager.WifiMode.AUTOLOGIN:
 				if self.isAutologinConfigured:
 					self._writeLog("- Action: disable autologin")
 					ret=self.n4dClient.AlumnatAccountManager.disable_alumnat_user()
-					self._writeLog("- Result: Changes apply successful")
+					if ret.get("status"):
+						self._writeLog("- Result: Changes apply successful")
+					else:
+						self._writeLog(f" - Result: Error applying changes: {ret.get("msg")}")
+						print(f'   [Login-Control]: Warning. Unable to disable AUTOLOGIN setting')
 			
-			else:
-				if not self.isAutologinConfigured:
-					self._writeLog("- Action: enable autologin")
-					ret=self.n4dClient.AlumnatAccountManager.enable_alumnat_user()
-					self._writeLog("- Result: Changes apply successful")
-				
-			print('   [Login-Control]: Action completed successfull')
+			elif loginValue != LoginControlCliManager.WifiMode.EASYLOGIN: 
+				if self.isEasyLoginConfigured:
+					ret=self._changeEasyLogin("disable")
+					if not ret:
+						print(f'   [Login-Control]: Warning. Unable to disable EASYLOGIN setting')
+
 			self._getInfo("End")
 			
 			if loginValue not in (LoginControlCliManager.WifiMode.AUTOLOGIN,LoginControlCliManager.WifiMode.EASYLOGIN) and not self.isCDCIntegrationEnabled:
@@ -417,13 +435,15 @@ class LoginControlCliManager(object):
 	def _getInfo(self,step="Initial"):
 
 		self.easyLoginActivationFailed=False
+		self.autoLoginActivationFailed=False
 
 		try:
 			self._writeLog(f"Login Control. {step} configuration")
 			wifiConfiguration=self.n4dClient.WifiEduGva.get_settings()
 			wifiPassword=self.n4dClient.WifiEduGva.get_autologin()
-			self.isAutologinConfigured=self._checkIfAutologinIsEnabled()
-			self.isGuestUserEnabled=self._checkIfGuestUserIsEnabled()
+			self.isAutologinConfigured=self._getAutoLoginStatus()
+			self.isGuestUserEnabled=self._getGuestUserStatus()
+			self.isEasyLoginConfigured=self._getEasyLoginStatus()
 
 			if wifiConfiguration in LoginControlCliManager.WifiMode.__members__.values():
 				if wifiConfiguration in (LoginControlCliManager.WifiMode.DISABLE,LoginControlCliManager.WifiMode.EASYLOGINWIRED):
@@ -447,10 +467,15 @@ class LoginControlCliManager(object):
 			
 			if step=="Initial":
 				if self.currentLoginOption in (LoginControlCliManager.WifiMode.EASYLOGIN,LoginControlCliManager.WifiMode.EASYLOGINWIRED):
-					if not self._getEasyLoginStatus():
+					if not self.isEasyLoginConfigured:
 						if not self._changeEasyLogin("enable"):
 							self.easyLoginActivationFailed=True
-							self._writeLog(f"- Guest User account enabled: {self.isGuestUserEnabled}")
+						self.isEasyLoginConfigured=self._getEasyLoginStatus()
+				elif self.currentLoginOption == LoginControlCliManager.WifiMode.AUTOLOGIN:
+					if not self.isAutologinConfigured:
+						if not self.n4dClient.AlumnatAccountManager.enable_alumnat_user().get("status"):
+							self.autoLoginActivationFailed=True
+						self.isAutologinConfigured=self._getAutoLoginStatus()
 			return True
 
 		except Exception as e:
@@ -496,7 +521,7 @@ class LoginControlCliManager(object):
 
 	#def _mappingWifiOptionDisabled
 
-	def _checkIfAutologinIsEnabled(self):
+	def _getAutoLoginStatus(self):
 
 		try:
 			ret=self.n4dClient.AlumnatAccountManager.get_alumnat_status().get('status',False)
@@ -505,9 +530,9 @@ class LoginControlCliManager(object):
 
 		return ret
 
-	#def _checkIfAutologinIsEnabled
+	#def _getAutoLoginStatus
 
-	def _checkIfGuestUserIsEnabled(self):
+	def _getGuestUserStatus(self):
 
 		try:
 			ret=self.n4dClient.GuestAccountManager.get_guest_status().get("status", False)
@@ -517,7 +542,7 @@ class LoginControlCliManager(object):
 
 		return ret
 
-	#def _checkIfGuestUserIsEnabled
+	#def _getGuestUserStatus
 
 	def _checkPassword(self,password,confirmPassword):
 
@@ -538,7 +563,7 @@ class LoginControlCliManager(object):
 		cmd=["easyclientctl","status"]
 
 		try:
-			ret=subprocess.run(cmd,capture_output=True,text=True,check=True)
+			ret=subprocess.run(cmd,capture_output=True,text=True)
 			if ret.returncode==0:
 				return True
 		
@@ -557,18 +582,16 @@ class LoginControlCliManager(object):
 		cmd=["easyclientctl",action]
 
 		try:
-			ret=subprocess.run(cmd,capture_output=True,text=True,check=True)
-			if ret.returncode!=0:
-				return False
+			ret=subprocess.run(cmd,capture_output=True,text=True)
+			if ret.returncode==0:
+				return True
 		except subprocess.CalledProcessError as e:
 			self._writeLog(f"- ChangeEasyLogin: {action} action error: {e.returncode}")
-			return False
 
 		except FileNotFoundError:
 			self._writeLog(f"- ChangeEasyLogin: {action} action error: Exec not found in the system")
-			return False
 
-		return True
+		return False
 					
 	#def _changeEasyLogin	
 

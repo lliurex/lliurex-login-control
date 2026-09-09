@@ -135,7 +135,7 @@ class N4dManager:
 		if currentLoginOption in (N4dManager.WifiMode.AUTOLOGIN, N4dManager.WifiMode.EASYLOGIN):
 			if not currentPassword:
 				return {"status": False, "code": N4dManager.ERROR_PASSWORD_EMPTY, "type": N4dManager.KIRIGAMI_MSG_ERROR}
-			if currentPassword != self.currentPassword and currentPassword != confirmPasswordEntry:
+			if currentPassword != self.currentPassword or currentPassword != confirmPasswordEntry:
 				return {"status": False, "code": N4dManager.ERROR_PASSWORDS_NOT_MATCH, "type": N4dManager.KIRIGAMI_MSG_ERROR}
 
 		loginActions = []
@@ -157,7 +157,7 @@ class N4dManager:
 				if self.isAutoLoginEnabled: loginActions.append(lambda: self._changeAutoLogin(1))
 				if self.isEasyLoginEnabled: loginActions.append(lambda: self._changeEasyLogin("disable"))
 
-		if currentPassword and currentPassword != self.currentPassword:
+		if currentPassword != self.currentPassword:
 			otherActions.append(lambda: self._changePassword(currentPassword))
 
 		if isGuestUserEnabled != self.isGuestUserEnabled:
@@ -327,10 +327,12 @@ class N4dManager:
 		cmd=["easyclientctl","status"]
 
 		try:
-			ret=subprocess.run(cmd,capture_output=True,text=True,check=True)
-			return True
+			ret=subprocess.run(cmd,capture_output=True,text=True)
+			if ret.returncode==0:
+				return True
 		
 		except subprocess.CalledProcessError as e:
+			print(f"ERROR:{e}")
 			self.writeLog(f"- StatusEasyLogin: get status error: {e.returncode}")
 
 		except FileNotFoundError:
@@ -341,6 +343,9 @@ class N4dManager:
 	#def _getEasyLoginStatus
 	
 	def _changeEasyLogin(self,action):
+
+		self.writeLog("Changes in easylogin")
+		self.writeLog(f"- Action: Activate easylogin: {action}")
 		
 		cmd=["easyclientctl",action]
 
@@ -350,17 +355,19 @@ class N4dManager:
 			lastError=N4dManager.ERROR_DEACTIVATING_EASYLOGIN
 
 		try:
-			ret=subprocess.run(cmd,capture_output=True,text=True,check=True)
+			ret=subprocess.run(cmd,capture_output=True,text=True)
+			self.writeLog("- Result: Changes apply successful")
 			return {
 				"status":True,
 				"lastError":None,
 			}
 	
 		except subprocess.CalledProcessError as e:
-			self.writeLog(f"- ChangeEasyLogin: {action} action error: {e.returncode}")
+			print(f"ERROR: {e}")
+			self.writeLog(f"- Result: Error applying changes: {e.returncode}")
 	
 		except FileNotFoundError:
-			self.writeLog(f"- ChangeEasyLogin: {action} action error: Exec not found in the system")
+			self.writeLog(f"- Result: Error applying changes: Exec not found in the system")
 
 		return {
 			"status":False,
