@@ -31,7 +31,6 @@ class N4dManager:
 	ERROR_PASSWORD_EMPTY=-100
 	ERROR_CHANGING_PASSWORD=-110
 
-
 	KIRIGAMI_MSG_OK=0
 	KIRIGAMI_MSG_ERROR=1
 	KIRIGAMI_MSG_WARNING=2
@@ -139,35 +138,43 @@ class N4dManager:
 			if currentPassword != self.currentPassword and currentPassword != confirmPasswordEntry:
 				return {"status": False, "code": N4dManager.ERROR_PASSWORDS_NOT_MATCH, "type": N4dManager.KIRIGAMI_MSG_ERROR}
 
-		actions = []
+		loginActions = []
+		otherActions = []
 
 		if currentLoginOption != self.currentLoginOption:
 			if currentLoginOption == N4dManager.WifiMode.AUTOLOGIN:
-				actions.append(lambda: self._changeAutoLogin(0))
+				loginActions.append(lambda: self._changeAutoLogin(0))
 			elif currentLoginOption in (N4dManager.WifiMode.EASYLOGIN, N4dManager.WifiMode.EASYLOGINWIRED):
-				actions.append(lambda: self._changeEasyLogin("enable"))
+				loginActions.append(lambda: self._changeEasyLogin("enable"))
 
-			actions.append(lambda: self._changeLogin(currentLoginOption))
+			loginActions.append(lambda: self._changeLogin(currentLoginOption))
 
 			if currentLoginOption == N4dManager.WifiMode.AUTOLOGIN and self.isEasyLoginEnabled:
-				actions.append(lambda: self._changeEasyLogin("disable"))
+				loginActions.append(lambda: self._changeEasyLogin("disable"))
 			elif currentLoginOption in (N4dManager.WifiMode.EASYLOGIN, N4dManager.WifiMode.EASYLOGINWIRED) and self.isAutoLoginEnabled:
-				actions.append(lambda: self._changeAutoLogin(1))
+				loginActions.append(lambda: self._changeAutoLogin(1))
 			elif currentLoginOption not in (N4dManager.WifiMode.AUTOLOGIN, N4dManager.WifiMode.EASYLOGIN, N4dManager.WifiMode.EASYLOGINWIRED):
-				if self.isAutoLoginEnabled: actions.append(lambda: self._changeAutoLogin(1))
-				if self.isEasyLoginEnabled: actions.append(lambda: self._changeEasyLogin("disable"))
+				if self.isAutoLoginEnabled: loginActions.append(lambda: self._changeAutoLogin(1))
+				if self.isEasyLoginEnabled: loginActions.append(lambda: self._changeEasyLogin("disable"))
 
 		if currentPassword and currentPassword != self.currentPassword:
-			actions.append(lambda: self._changePassword(currentPassword))
+			otherActions.append(lambda: self._changePassword(currentPassword))
 
 		if isGuestUserEnabled != self.isGuestUserEnabled:
-			actions.append(lambda: self._changeGuestUser(isGuestUserEnabled))
+			otherActions.append(lambda: self._changeGuestUser(isGuestUserEnabled))
 
 		errorCount = 0
 		lastError = None
 
-		for action in actions:
+		for action in loginActions:
 			ret = action()
+			if not ret.get("status"):
+				errorCount += 1
+				lastError = ret.get("lastError")
+				break
+
+		for action in otherActions:
+			ret=action()
 			if not ret.get("status"):
 				errorCount += 1
 				lastError = ret.get("lastError")
