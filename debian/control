@@ -10,14 +10,14 @@ Vcs-Git: https://github.com/lliurex/lliurex-login-control
 
 Package: lliurex-login-control
 Architecture: amd64
-Depends: ${shlibs:Depends}, ${misc:Depends}, python3, n4d-wifiedugva, n4d-alumnatmanager, n4d-qt-agent, python3-n4d-client,pyside6-tools, python3-pyside6.qtqml, python3-pyside6.qtquick, python3-pyside6.qtgui, python3-pyside6.qtwidgets, python3-pyside6.qtquickwidgets,llx-guest
+Depends: ${shlibs:Depends}, ${misc:Depends}, python3, n4d-wifiedugva, llx-alumnat-wifi (>=1.22.8), llx-guest (>=0.55.2),n4d-qt-agent, python3-n4d-client,pyside6-tools, python3-pyside6.qtqml, python3-pyside6.qtquick, python3-pyside6.qtgui, python3-pyside6.qtwidgets, python3-pyside6.qtquickwidgets
 Recommends:lliurex-login-control-cli
 Description: App to manage login settings
  This package provides a gui to manage some login settings
 
 Package: lliurex-login-control-cli
 Architecture: amd64
-Depends: ${shlibs:Depends},n4d-wifiedugva, n4d-alumnatmanager, python3, python3-n4d-client,llx-guest
+Depends: ${shlibs:Depends},n4d-wifiedugva, llx-alumnat-wifi (>=1.22.8), llx-guest (>=0.55.2), python3, python3-n4d-client
 Description: CLI to manage login settings in computer
  This package provides a cli to manage the configuration of some login settings
 

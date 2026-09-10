@@ -22,6 +22,7 @@ case "$1" in
         if [ -d "$tokenDir" ];then
             rm -rf "$tokenDir" || true
         fi
+        zero-center set-non-configured llx-guest || true
     ;;
 
     failed-upgrade)

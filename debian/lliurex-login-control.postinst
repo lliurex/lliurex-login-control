@@ -24,6 +24,8 @@ case "$1" in
         tokenDir=/var/lib/lliurex-login-control/version
 
         echo "$newVersion" > "$tokenDir" || true
+
+        zero-center set-configured llx-guest || true
         
     ;;
 
