@@ -9,15 +9,22 @@ Vcs-Browser: https://svn.lliurex.net/noble/lliurex-login-control
 Vcs-Git: https://github.com/lliurex/lliurex-login-control
 
 Package: lliurex-login-control
-Architecture: amd64
-Depends: ${shlibs:Depends}, ${misc:Depends}, python3, n4d-wifiedugva, llx-alumnat-wifi (>=1.22.8), llx-guest (>=0.55.2),n4d-qt-agent, python3-n4d-client,pyside6-tools, python3-pyside6.qtqml, python3-pyside6.qtquick, python3-pyside6.qtgui, python3-pyside6.qtwidgets, python3-pyside6.qtquickwidgets
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, python3, n4d-wifiedugva, n4d-lliurex-login-control,llx-alumnat-wifi (>=1.22.8), llx-guest (>=0.55.2),n4d-qt-agent, python3-n4d-client,pyside6-tools, python3-pyside6.qtqml, python3-pyside6.qtquick, python3-pyside6.qtgui, python3-pyside6.qtwidgets, python3-pyside6.qtquickwidgets
 Recommends:lliurex-login-control-cli
 Description: App to manage login settings
  This package provides a gui to manage some login settings
 
 Package: lliurex-login-control-cli
-Architecture: amd64
-Depends: ${shlibs:Depends},n4d-wifiedugva, llx-alumnat-wifi (>=1.22.8), llx-guest (>=0.55.2), python3, python3-n4d-client
+Architecture: all
+Depends: ${shlibs:Depends},n4d-wifiedugva, llx-alumnat-wifi (>=1.22.8), llx-guest (>=0.55.2), n4d-lliurex-login-control, python3, python3-n4d-client
 Description: CLI to manage login settings in computer
  This package provides a cli to manage the configuration of some login settings
+
+Package: n4d-lliurex-login-control
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, n4d, easy-login-common
+Description: Plguin to manage login control
+ This package provides a n4d-plugin to manage login-control in the computer
+
 

@@ -1,0 +1,2 @@
+n4d-lliurex-login-control.install/config/LoginControlManager.json /etc/n4d/conf.d/
+n4d-lliurex-login-control.install/src/LoginControlManager.py /usr/share/n4d/python-plugins/
