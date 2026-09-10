@@ -129,9 +129,9 @@ class LoginControlCliManager(object):
 
 		try:
 			self._writeLog("Changes in the login settings")
+			self._createClient()
 			
 			ret=True
-			self._createClient()
 
 			if loginValue==LoginControlCliManager.WifiMode.EASYLOGIN and not self.isEasyLoginConfigured:
 				ret=self._changeEasyLogin("enable")
@@ -202,11 +202,9 @@ class LoginControlCliManager(object):
 		
 		try:
 			self._writeLog("Changes in the login settings:")
-			
 			self._createClient()
-
-			simpleLoginOptions=loginOption == LoginControlCliManager.WifiMode.EASYLOGINWIRED
-			
+		
+			simpleLoginOptions=(loginValue == LoginControlCliManager.WifiMode.EASYLOGINWIRED)
 			if simpleLoginOptions and not self.isEasyLoginConfigured:
 				ret=self._changeEasyLogin("enable")
 				if not ret:
@@ -432,6 +430,9 @@ class LoginControlCliManager(object):
 		self.autoLoginActivationFailed=False
 
 		try:
+			if step=="initial":
+				self._createClient()
+				
 			self._writeLog(f"Login Control. {step} configuration")
 			wifiConfiguration=self.n4dClient.WifiEduGva.get_settings()
 			wifiPassword=self.n4dClient.WifiEduGva.get_autologin()
@@ -553,20 +554,12 @@ class LoginControlCliManager(object):
 
 	def _getEasyLoginStatus(self):
 
-		cmd=["easyclientctl","status"]
-
 		try:
-			ret=subprocess.run(cmd,capture_output=True,text=True)
-			if ret.returncode==0:
-				return True
-		
-		except subprocess.CalledProcessError as e:
-			self._writeLog(f"- StatusEasyLogin: get status error: {e.returncode}")
+			ret=self.n4dClient.LoginControlManager.get_easylogin_client_status().get("status", False)
+		except Exception as e:
+			ret=False
 
-		except FileNotFoundError:
-			self._writeLog(f"- StatusEasyLogin: get status error: Exec not found in the system")
-
-		return False
+		return ret
 
 	#def _getEasyLoginStatus
 
@@ -574,21 +567,23 @@ class LoginControlCliManager(object):
 
 		self._writeLog(f"- Action: {action} EASYLOGIN")
 
-		cmd=["sudo","easyclientctl",action]
-
 		try:
-			ret=subprocess.run(cmd,capture_output=True,text=True)
-			if ret.returncode==0:
+			if action=="enable":
+				ret=self.n4dClient.LoginControlManager.enable_easylogin_client()
+			else:
+				ret=self.n4dClient.LoginControlManager.disable_easylogin_client()
+
+			if ret.get("status",False):
 				self._writeLog("- Result: Changes apply successful")
 				return True
 			else:
-				self._writeLog("- Result: Error applying changes")
-	
-		except FileNotFoundError:
-			self._writeLog(f"- Result: Error applying changes: Exec not found in the system")
+				self._writeLog(" - Result: Error applying changes")
+		except Exception :
+			self._writeLog(" - Result: Error applying changes")
 
 		return False
-					
+
+						
 	#def _changeEasyLogin
 
 	def _changeAutologin(self,action):

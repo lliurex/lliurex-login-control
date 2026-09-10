@@ -1,0 +1,28 @@
+{
+	"SETUP":{
+		"type":"python",
+		"path":"LoginControlManager.py",
+		"class":"LoginControlManager"
+	},
+	"METHODS":{
+		"get_easylogin_client_status":{
+			"allowed_groups": [
+              "anonymous"
+            ]
+           },
+		"enable_easylogin_client":{
+			"allowed_groups": [
+              "sudo",
+              "admins",
+              "teachers"
+            ]
+        },    
+		"disable_easylogin_client":{
+			"allowed_groups": [
+              "sudo",
+              "admins",
+              "teachers"
+            ]
+         }
+    }
+}

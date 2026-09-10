@@ -144,7 +144,7 @@ class N4dManager:
 
 		if currentLoginOption != self.currentLoginOption:
 			if currentLoginOption == N4dManager.WifiMode.AUTOLOGIN:
-				loginActions.append(lambda: self._changeAutoLogin(0))
+				loginActions.append(lambda: self._changeAutoLogin("enable"))
 			elif currentLoginOption in (N4dManager.WifiMode.EASYLOGIN, N4dManager.WifiMode.EASYLOGINWIRED):
 				loginActions.append(lambda: self._changeEasyLogin("enable"))
 
@@ -153,9 +153,9 @@ class N4dManager:
 			if currentLoginOption == N4dManager.WifiMode.AUTOLOGIN and self.isEasyLoginEnabled:
 				loginActions.append(lambda: self._changeEasyLogin("disable"))
 			elif currentLoginOption in (N4dManager.WifiMode.EASYLOGIN, N4dManager.WifiMode.EASYLOGINWIRED) and self.isAutoLoginEnabled:
-				loginActions.append(lambda: self._changeAutoLogin(1))
+				loginActions.append(lambda: self._changeAutoLogin("disable"))
 			elif currentLoginOption not in (N4dManager.WifiMode.AUTOLOGIN, N4dManager.WifiMode.EASYLOGIN, N4dManager.WifiMode.EASYLOGINWIRED):
-				if self.isAutoLoginEnabled: loginActions.append(lambda: self._changeAutoLogin(1))
+				if self.isAutoLoginEnabled: loginActions.append(lambda: self._changeAutoLogin("disable"))
 				if self.isEasyLoginEnabled: loginActions.append(lambda: self._changeEasyLogin("disable"))
 
 		if currentPassword != self.currentPassword:
@@ -258,15 +258,15 @@ class N4dManager:
 
 	#def _changePassword
 
-	def _changeAutoLogin(self, actionAutoLogin):
+	def _changeAutoLogin(self, action):
+
+		self.writeLog(f"- Action: {action} autologin")
 
 		try:
-			if actionAutoLogin == 0:
-				self.writeLog("- Action: Enable autologin")
+			if action == "enabled":
 				lastError=N4dManager.ERROR_ACTIVATING_AUTOLOGIN
 				ret=self.client.AlumnatAccountManager.enable_alumnat_user()
-			elif actionAutoLogin == 1:
-				self.writeLog("- Action: Disable autologin")
+			else:
 				lastError=N4dManager.ERROR_DEACTIVATING_AUTOLOGIN
 				ret=self.client.AlumnatAccountManager.disable_alumnat_user()
 
@@ -321,17 +321,10 @@ class N4dManager:
 
 	def _getEasyLoginStatus(self):
 
-		cmd=["easyclientctl","status"]
-
 		try:
-			ret=subprocess.run(cmd,capture_output=True,text=True)
-			if ret.returncode==0:
-				return True
-		
-		except FileNotFoundError:
-			self.writeLog(f"- StatusEasyLogin: get status error: Exec not found in the system")
-
-		return False
+			return self.client.LoginControlManager.get_easylogin_client_status().get("status",False)
+		except Exception:
+			return False
 
 	#def _getEasyLoginStatus
 	
@@ -339,16 +332,15 @@ class N4dManager:
 
 		self.writeLog(f"- Action: {action} easylogin")
 		
-		cmd=["sudo","easyclientctl",action]
-
-		if action=="enable":
-			lastError=N4dManager.ERROR_ACTIVATING_EASYLOGIN
-		else:
-			lastError=N4dManager.ERROR_DEACTIVATING_EASYLOGIN
-
 		try:
-			ret=subprocess.run(cmd,capture_output=True,text=True)
-			if ret.returncode==0:
+			if action=="enable":
+				lastError=N4dManager.ERROR_ACTIVATING_EASYLOGIN
+				ret=self.client.LoginControlManager.enable_easylogin_client()
+			else:
+				lastError=N4dManager.ERROR_DEACTIVATING_EASYLOGIN
+				ret=self.client.LoginControlManager.disable_easylogin_client()
+
+			if ret.get("status",False):
 				self.writeLog("- Result: Changes apply successful")
 				return {
 					"status":True,
@@ -356,9 +348,8 @@ class N4dManager:
 				}
 			else:
 				self.writeLog(" - Result: Error applying changes")
-	
-		except FileNotFoundError:
-			self.writeLog(f"- Result: Error applying changes: Exec not found in the system")
+		except Exception :
+			self.writeLog(" - Result: Error applying changes")
 
 		return {
 			"status":False,
