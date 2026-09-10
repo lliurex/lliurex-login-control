@@ -135,8 +135,9 @@ class N4dManager:
 		if currentLoginOption in (N4dManager.WifiMode.AUTOLOGIN, N4dManager.WifiMode.EASYLOGIN):
 			if not currentPassword:
 				return {"status": False, "code": N4dManager.ERROR_PASSWORD_EMPTY, "type": N4dManager.KIRIGAMI_MSG_ERROR}
-			if currentPassword != self.currentPassword or currentPassword != confirmPasswordEntry:
-				return {"status": False, "code": N4dManager.ERROR_PASSWORDS_NOT_MATCH, "type": N4dManager.KIRIGAMI_MSG_ERROR}
+			if currentPassword != self.currentPassword:
+				if currentPassword != confirmPasswordEntry:
+					return {"status": False, "code": N4dManager.ERROR_PASSWORDS_NOT_MATCH, "type": N4dManager.KIRIGAMI_MSG_ERROR}
 
 		loginActions = []
 		otherActions = []
@@ -166,6 +167,8 @@ class N4dManager:
 		errorCount = 0
 		lastError = None
 
+		self.writeLog("Changes in login configuration:")
+		
 		for action in loginActions:
 			ret = action()
 			if not ret.get("status"):
@@ -215,9 +218,8 @@ class N4dManager:
 
 	def _changeLogin(self,newLoginOption):
 
-		self.writeLog("Changes in login configuration:")
-		self.writeLog(f"- Action: Changed login Option to: {newLoginOption}")
-		
+		self.writeLog(f"- Action: Changed login option to: {newLoginOption}")
+
 		try:
 			self.client.WifiEduGva.set_settings(newLoginOption)
 			self.writeLog("- Result: Changes apply successful")
@@ -237,9 +239,8 @@ class N4dManager:
 
 	def _changePassword(self, newPassword):
 
-		self.writeLog("Changes in autologin password:")
 		action_text = "Update password" if newPassword else "Clear password"
-		self.writeLog(f"- Action: {action_text}")
+		self.writeLog(f"- Action: update alumnat password: {action_text}")
 
 		try:
 			self.client.WifiEduGva.set_autologin(newPassword)
@@ -259,8 +260,6 @@ class N4dManager:
 
 	def _changeAutoLogin(self, actionAutoLogin):
 
-		self.writeLog("Changes in autologin")
-	
 		try:
 			if actionAutoLogin == 0:
 				self.writeLog("- Action: Enable autologin")
@@ -292,8 +291,6 @@ class N4dManager:
 
 	def _changeGuestUser(self,isGuestUserEnabled):
 
-	
-		self.writeLog("Changes in guest-user:")
 		self.writeLog(f"- Action: Activate guest-user: {isGuestUserEnabled}")
 
 		try:
@@ -331,10 +328,6 @@ class N4dManager:
 			if ret.returncode==0:
 				return True
 		
-		except subprocess.CalledProcessError as e:
-			print(f"ERROR:{e}")
-			self.writeLog(f"- StatusEasyLogin: get status error: {e.returncode}")
-
 		except FileNotFoundError:
 			self.writeLog(f"- StatusEasyLogin: get status error: Exec not found in the system")
 
@@ -344,10 +337,9 @@ class N4dManager:
 	
 	def _changeEasyLogin(self,action):
 
-		self.writeLog("Changes in easylogin")
-		self.writeLog(f"- Action: Activate easylogin: {action}")
+		self.writeLog(f"- Action: {action} easylogin")
 		
-		cmd=["easyclientctl",action]
+		cmd=["sudo","easyclientctl",action]
 
 		if action=="enable":
 			lastError=N4dManager.ERROR_ACTIVATING_EASYLOGIN
@@ -356,15 +348,14 @@ class N4dManager:
 
 		try:
 			ret=subprocess.run(cmd,capture_output=True,text=True)
-			self.writeLog("- Result: Changes apply successful")
-			return {
-				"status":True,
-				"lastError":None,
-			}
-	
-		except subprocess.CalledProcessError as e:
-			print(f"ERROR: {e}")
-			self.writeLog(f"- Result: Error applying changes: {e.returncode}")
+			if ret.returncode==0:
+				self.writeLog("- Result: Changes apply successful")
+				return {
+					"status":True,
+					"lastError":None,
+				}
+			else:
+				self.writeLog(" - Result: Error applying changes")
 	
 		except FileNotFoundError:
 			self.writeLog(f"- Result: Error applying changes: Exec not found in the system")

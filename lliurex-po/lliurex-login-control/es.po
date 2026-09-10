@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-08 09:52+0200\n"
-"PO-Revision-Date: 2026-09-08 09:54+0200\n"
+"POT-Creation-Date: 2026-09-10 10:40+0200\n"
+"PO-Revision-Date: 2026-09-10 10:41+0200\n"
 "Last-Translator: lliurex <lliurex@gva.es>\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
@@ -156,47 +156,65 @@ msgstr ""
 "activación ha fallado"
 
 #: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:428
+msgid ""
+"The default login option is configured to use Auto-Login but its activation "
+"has failed"
+msgstr ""
+"El modo de acceso por defecto esta configurado para usar Auto-Login pero su "
+"activación ha fallado"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:430
+msgid "Error reloading configuration"
+msgstr "Error recargando la configuración"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:432
 msgid "Error changing login settings"
 msgstr "Error cambiando la configuración de inicio de sessión"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:430
-msgid "Error changing password for autologin or Easy-Login"
-msgstr ""
-"Error cambiando la contraseña para inicio de sesión con alumnat o Easy-Login"
-
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:432
-msgid "Error changing autogin activation"
-msgstr "Error cambiando la activación del inicio de sesión automático"
-
 #: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:434
-msgid "Multiple errors have ocurred while applying changes"
-msgstr "Se han producido varios errores al aplicar los cambios"
+#, fuzzy
+msgid "Error activating Auto-Login"
+msgstr "Error activando Easy-Login"
 
 #: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:436
-msgid "Passwords must match"
-msgstr "Las contraseñas deben coincidir"
+msgid "The Auto-Login setting could not be disabled"
+msgstr "La configuración para Auto-Login no ha podido ser desactivada"
 
 #: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:438
-msgid "You must enter a password"
-msgstr "Debe introducir una contraseña"
+msgid "Error activating Easy-Login"
+msgstr "Error activando  Easy-Login"
 
 #: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:440
-msgid "Error reloading configuration"
-msgstr "Error recargando la configuración"
+msgid "The Easy-Login setting could not be disabled"
+msgstr "La configuración para Easy-Login no ha podio ser desactivada"
 
 #: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:442
 msgid "Error changing guest user activation"
 msgstr "Error cambiando la activación de la cuenta de usuario invitado"
 
 #: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:444
-msgid "Error changing easy-login activation"
-msgstr "Error cambiando la activación de Easy-Login"
+msgid "Multiple errors have ocurred while applying changes"
+msgstr "Se han producido varios errores al aplicar los cambios"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:500
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:446
+msgid "Passwords must match"
+msgstr "Las contraseñas deben coincidir"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:448
+msgid "You must enter a password"
+msgstr "Debe introducir una contraseña"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:450
+msgid "Error changing password for Auto-Login or Easy-Login"
+msgstr ""
+"Error cambiando la contraseña para inicio de sesión para Auto-Login o Easy-"
+"Login"
+
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:506
 msgid "Click to show password"
 msgstr "Haga clic para mostrar la contraseña"
 
-#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:501
+#: ../lliurex-login-control.install/ui/rsrc/LoginOptions.qml:507
 msgid "Click to hide password"
 msgstr "Haga clic para ocultar la contraseña"
 
@@ -207,3 +225,9 @@ msgstr "Cargando. Espere un momento..."
 #: ../lliurex-login-control.install/ui/rsrc/Loading.qml:71
 msgid "Error loading configuration"
 msgstr "Error cargando la configuración"
+
+#~ msgid "Error "
+#~ msgstr "Error"
+
+#~ msgid "Error changing autogin activation"
+#~ msgstr "Error cambiando la activación del inicio de sesión automático"

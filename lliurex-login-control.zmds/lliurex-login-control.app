@@ -14,3 +14,4 @@ Category=Configuration
 Icon=lliurex-login-control
 ScriptPath=lliurex-login-control.zmd
 Groups=sudo;admins;teachers
+Replaces=llx-guest

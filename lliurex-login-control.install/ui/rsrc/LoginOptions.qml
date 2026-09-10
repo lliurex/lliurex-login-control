@@ -431,8 +431,7 @@ Rectangle{
             case -20:
                 return i18nd("lliurex-login-control","Error changing login settings")
             case -30:
-                return i18nd("lliurex-login-control","Error 
-                activating Auto-Login")
+                return i18nd("lliurex-login-control","Error activating Auto-Login")
             case -40:
                 return i18nd("lliurex-login-control","The Auto-Login setting could not be disabled")
             case -50:
