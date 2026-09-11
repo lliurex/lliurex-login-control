@@ -90,7 +90,7 @@ class N4dManager:
 			self.currentLoginOption = loginOption
 		else:
 			self.isWifiEnabled = getattr(self, "isWifiEnabled", False)
-			self.currentLoginOption = getattr(self, "currentLoginOption", None)
+			self.currentLoginOption = getattr(self, "currentLoginOption", 0)
 
 		if wifiPassword is not None:
 			self.currentPassword = wifiPassword
@@ -117,7 +117,7 @@ class N4dManager:
 
 			elif loginOption == N4dManager.WifiMode.AUTOLOGIN:
 				if not self.isAutoLoginEnabled:
-					ret = self._changeAutoLogin(0)
+					ret = self._changeAutoLogin("enable")
 					if not ret.get("status"):
 						return {"status": True, "code": N4dManager.WARNING_AUTOLOGIN_ACTIVATION, "type": N4dManager.KIRIGAMI_MSG_WARNING}
 					self.isAutoLoginEnabled = self._getAutoLoginStatus()
@@ -263,7 +263,7 @@ class N4dManager:
 		self.writeLog(f"- Action: {action} autologin")
 
 		try:
-			if action == "enabled":
+			if action == "enable":
 				lastError=N4dManager.ERROR_ACTIVATING_AUTOLOGIN
 				ret=self.client.AlumnatAccountManager.enable_alumnat_user()
 			else:

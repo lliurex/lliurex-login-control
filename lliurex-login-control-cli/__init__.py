@@ -430,7 +430,7 @@ class LoginControlCliManager(object):
 		self.autoLoginActivationFailed=False
 
 		try:
-			if step=="initial":
+			if step=="Initial":
 				self._createClient()
 				
 			self._writeLog(f"Login Control. {step} configuration")
@@ -583,7 +583,6 @@ class LoginControlCliManager(object):
 
 		return False
 
-						
 	#def _changeEasyLogin
 
 	def _changeAutologin(self,action):
