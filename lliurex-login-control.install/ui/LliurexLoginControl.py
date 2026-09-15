@@ -659,7 +659,7 @@ class LliurexLoginControl(QObject):
 	@Slot()
 	def openHelp(self):
 		
-		helpUrl='https://wiki.edu.gva.es/lliurex/tiki-index.php?page=Integración+con+las+WiFis+educativas+de+la+GVA'
+		helpUrl='https://wiki.edu.gva.es/lliurex/tiki-index.php?page=LliureX-Login-Control'
 		QDesktopServices.openUrl(QUrl(helpUrl))
 
 	#def openHelp
