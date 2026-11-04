@@ -430,9 +430,7 @@ class LoginControlCliManager(object):
 		self.autoLoginActivationFailed=False
 
 		try:
-			if step=="Initial":
-				self._createClient()
-				
+			
 			self._writeLog(f"Login Control. {step} configuration")
 			wifiConfiguration=self.n4dClient.WifiEduGva.get_settings()
 			wifiPassword=self.n4dClient.WifiEduGva.get_autologin()
