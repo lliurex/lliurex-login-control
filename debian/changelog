@@ -1,3 +1,9 @@
+lliurex-login-control (1.0.2) noble; urgency=medium
+
+  * Fixed cli to prevent it from asking for the n4d password twice
+  
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Wed, 04 Nov 2026 09:50:39 +0100
+
 lliurex-login-control (1.0.1) noble; urgency=medium
 
   * Add versioned breaks 
