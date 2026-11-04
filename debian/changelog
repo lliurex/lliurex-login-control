@@ -1,3 +1,9 @@
+lliurex-login-control (1.0.1) noble; urgency=medium
+
+  * Add versioned breaks 
+
+ -- Raul Rodrigo Segura <raurodse@gmail.com>  Wed, 04 Nov 2026 09:16:37 +0100
+
 lliurex-login-control (1.0) noble; urgency=medium
 
   * Initial release
